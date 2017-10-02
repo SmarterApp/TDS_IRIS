@@ -8,6 +8,7 @@
  ******************************************************************************/
 package tds.iris.abstractions.repository;
 
+import tds.blackbox.ContentRequestException;
 import tds.itemrenderer.data.AccLookup;
 import tds.itemrenderer.data.IITSDocument;
 
@@ -18,4 +19,6 @@ public interface IContentBuilder
   public void loadFile (String fileName) throws ContentException;
   public void removeFile(String fileName) throws ContentException;
   public void init () throws ContentException;
+  public void init (String location) throws ContentException;
+  
 }

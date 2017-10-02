@@ -10,6 +10,7 @@ package tds.iris.repository;
 
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
@@ -23,10 +24,12 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import AIR.Common.Utilities.SpringApplicationContext;
+import tds.blackbox.ContentRequestException;
 import tds.iris.abstractions.repository.ContentException;
 import tds.iris.abstractions.repository.IContentBuilder;
 import tds.iris.abstractions.repository.IContentHelper;
 import tds.iris.web.data.ContentRequest;
+import tds.iris.web.data.ContentRequestEntity;
 import tds.iris.web.data.ContentRequestItem;
 import tds.itemrenderer.data.*;
 import tds.itemrenderer.data.ITSTypes.ITSEntityType;
@@ -47,65 +50,49 @@ public class ContentHelper implements IContentHelper {
     public synchronized void init() throws ContentException {
         _contentBuilder = SpringApplicationContext.getBean("iContentBuilder", IContentBuilder.class);
         reloadContent();
-        ContentWatcher contentThread = SpringApplicationContext.getBean("contentWatcher", ContentWatcher.class);
-        contentThread.start();
-
     }
 
-    @Override
-    public ItemRenderGroup loadRenderGroup(ContentRequest contentRequest) {
-        //watch the directory for changes to the files
-
-
+    private ItemRenderGroup getItemRenderGroup(List<ContentRequestItem> items,
+                                               AccLookup accLookup,
+                                               String passageId, boolean setPassage,
+                                               boolean setResponse, boolean setDisabled) {
         String id = "Page-" + UUID.randomUUID().toString();
-        ItemRenderGroup itemRenderGroup = new ItemRenderGroup(id, "default", "ENU");
 
-        // load passage
-        boolean reloadPassage = true;
-        if (contentRequest.getPassage() != null) {
-            String requestedPassageId = contentRequest.getPassage().getId();
-            // we will not attempt to load a passage
-            // if we already have a passage as part of the request or if we have
-            // been explicitly asked not to load a passage
-            if (!StringUtils.isEmpty(requestedPassageId)) {
-                itemRenderGroup.setPassage(_contentBuilder.getITSDocument(requestedPassageId));
-                reloadPassage = false;
-            } else if (!contentRequest.getPassage().getAutoLoad()) {
-                reloadPassage = false;
-            }
+        AccProperties accProperties = new AccProperties(accLookup);
+        ItemRenderGroup itemRenderGroup = new ItemRenderGroup(id, "default", accProperties.getLanguage());
+        boolean didSetPassage = false;
+
+        if(setPassage && StringUtils.isNotEmpty(passageId)){
+            itemRenderGroup.setPassage(_contentBuilder.getITSDocumentAcc(passageId, accLookup));
+            didSetPassage = true;
         }
 
-        if (contentRequest.getItems() != null) {
-            long stimulusKey = 0;
-            long bankKey = 0;
-
-            for (ContentRequestItem item : contentRequest.getItems()) {
-                IITSDocument document = _contentBuilder.getITSDocument(item.getId());
-                if (document != null) {
-                    IItemRender itemRender = new ItemRender(document, (int) document.getItemKey());
+        for (ContentRequestItem item : items) {
+            IITSDocument document = _contentBuilder.getITSDocumentAcc(item.getId(), accLookup);
+            if (document != null) {
+                IItemRender itemRender = new ItemRender(document, (int) document.getItemKey());
+                if (setResponse) {
                     itemRender.setResponse(item.getResponse());
-                    itemRenderGroup.add(itemRender);
+                }
 
-                    if (stimulusKey == 0 && document.getStimulusKey() > 0) {
-                        // set to the first non-zero stimulus
-                        stimulusKey = document.getStimulusKey();
-                        bankKey = document.getBankKey();
-                    }
+                itemRender.setDisabled(setDisabled);
+
+                itemRenderGroup.add(itemRender);
+                if (setPassage && !didSetPassage && document.getStimulusKey() > 0) {
+                    // set to the first non-zero stimulus
+                    String stimulusKey = getStimulusFormattedId(document.getBankKey(), document.getStimulusKey());
+                    itemRenderGroup.setPassage(_contentBuilder.getITSDocumentAcc(stimulusKey, accLookup));
                 }
             }
-
-            if (reloadPassage && stimulusKey > 0)
-                itemRenderGroup.setPassage(_contentBuilder.getITSDocument(ItsItemIdUtil.getItsDocumentId(bankKey, stimulusKey, ITSEntityType.Passage)));
         }
+
         return itemRenderGroup;
     }
 
-
     public ItemRenderGroup loadTutorial(long bankKey, long itemKey, String language) {
-
         String id = "Page-" + UUID.randomUUID().toString();
         ItemRenderGroup itemRenderGroup = new ItemRenderGroup(id, "default", language);
-        String itemId = String.format ("I-%s-%s", bankKey, itemKey);
+        String itemId = getItemFormattedId(bankKey, itemKey);
         IITSDocument document = _contentBuilder.getITSDocument(itemId);
 
         if (document != null) {
@@ -115,59 +102,40 @@ public class ContentHelper implements IContentHelper {
         return itemRenderGroup;
     }
 
-    public ItemRenderGroup loadRenderGroupAcc(ContentRequest contentRequest, AccLookup accLookup) {
-        String id = "Page-" + UUID.randomUUID().toString();
-        AccProperties accProperties = new AccProperties(accLookup);
-        ItemRenderGroup itemRenderGroup = new ItemRenderGroup(id, "default", accProperties.getLanguage());
+    public ItemRenderGroup loadRenderGroupAcc(ContentRequest contentRequest, AccLookup accLookup) throws ContentException {
+        String passageId = "";
+        boolean setPassage = true;
+        if(StringUtils.isNotEmpty(contentRequest.getLocationPath())){
+            loadContent(contentRequest.getLocationPath());
+        }
 
-        // load passage
-        boolean reloadPassage = true;
         if (contentRequest.getPassage() != null) {
-            String requestedPassageId = contentRequest.getPassage().getId();
-            // we will not attempt to load a passage
-            // if we already have a passage as part of the request or if we have
-            // been explicitly asked not to load a passage
-            if (!StringUtils.isEmpty(requestedPassageId)) {
-                itemRenderGroup.setPassage(_contentBuilder.getITSDocumentAcc(requestedPassageId, accLookup));
-                reloadPassage = false;
-            } else if (!contentRequest.getPassage().getAutoLoad()) {
-                reloadPassage = false;
+            passageId = contentRequest.getPassage().getId();
+             if (!contentRequest.getPassage().getAutoLoad()) {
+                setPassage = false;
             }
         }
 
-        if (contentRequest.getItems() != null) {
-            long stimulusKey = 0;
-            long bankKey = 0;
+        return getItemRenderGroup(contentRequest.getItems(), accLookup, passageId, setPassage, true, false );
+    }
 
-            for (ContentRequestItem item : contentRequest.getItems()) {
-                IITSDocument document = _contentBuilder.getITSDocumentAcc(item.getId(), accLookup);
-                if (document != null) {
-                    IItemRender itemRender = new ItemRender(document, (int) document.getItemKey());
-
-                    itemRender.setDisabled(false);
-
-                    itemRenderGroup.add(itemRender);
-
-
-                    if (stimulusKey == 0 && document.getStimulusKey() > 0) {
-                        // set to the first non-zero stimulus
-                        stimulusKey = document.getStimulusKey();
-                        bankKey = document.getBankKey();
-                    }
-                }
-            }
-
-            if (reloadPassage && stimulusKey > 0)
-                itemRenderGroup.setPassage(_contentBuilder.getITSDocumentAcc(ItsItemIdUtil.getItsDocumentId(bankKey, stimulusKey, ITSEntityType.Passage), accLookup));
-        }
-
-        return itemRenderGroup;
+    @Override
+    public ItemRenderGroup loadRenderGroup(ContentRequest contentRequest) {
+        //watch the directory for changes to the files
+        AccLookup accLookup = new AccLookup();
+        accLookup.add("Language", "ENU");
+        return loadRenderGroupAcc(contentRequest, accLookup);
     }
 
     @Override
     //reload all of the content within the directory
     public boolean reloadContent() throws ContentException {
         _contentBuilder.init();
+        return true;
+    }
+
+    public boolean loadContent(String locationPath) throws ContentException {
+        _contentBuilder.loadFile(locationPath);
         return true;
     }
 
@@ -180,4 +148,19 @@ public class ContentHelper implements IContentHelper {
     public void removeFile(String fileName) {
         _contentBuilder.removeFile(fileName);
     }
+
+    public IITSDocument getITSDocument(String id) throws ContentRequestException{
+        return _contentBuilder.getITSDocument(id);
+    }
+
+    public String getItemFormattedId(long bankKey, long itemKey){
+       return ItsItemIdUtil.getItsDocumentId(bankKey, itemKey, ITSEntityType.Item);
+
+    }
+
+    public String getStimulusFormattedId(long bankKey, long itemKey){
+        return ItsItemIdUtil.getItsDocumentId(bankKey, itemKey, ITSEntityType.Passage);
+
+    }
+
 }

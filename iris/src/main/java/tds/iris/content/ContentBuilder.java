@@ -43,14 +43,11 @@ import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 @Scope("singleton")
 public class ContentBuilder implements IContentBuilder {
     private static final Logger _logger = LoggerFactory.getLogger(ContentBuilder.class);
-    private String _contentPath;
     private ConfigBuilder _directoryScanner = null;
 
-    public synchronized void init() throws ContentException {
+    public synchronized void init(String location) throws ContentException {
         try {
-            // scan the local folder.
-            _contentPath = AppSettingsHelper.get("iris.ContentPath");
-            _directoryScanner = new ConfigBuilder(_contentPath);
+            _directoryScanner = new ConfigBuilder(location);
             _directoryScanner.create();
         } catch (Exception exp) {
             _logger.error("Error loading IRiS content.", exp);
@@ -58,47 +55,23 @@ public class ContentBuilder implements IContentBuilder {
         }
     }
 
+    public synchronized void init() throws ContentException{
+        // scan the local folder.
+        init(AppSettingsHelper.get("iris.ContentPath"));
+    }
+
     //add a new file to the directory
     public synchronized void loadFile(String fileName) {
-        _contentPath = fileName;
-        try{
-            String id = getId(fileName);
-            IrisITSDocument document = _directoryScanner.getDocumentRepresentation(id);
-            if(document != null){
-                removeFile(fileName);
-            }
-
-        }catch(Exception e){
-            //does not exist. continue
-        }
-
         try {
-            _directoryScanner.addFile(_contentPath);
+            _directoryScanner.addFile(fileName);
         } catch (Exception e) {
             _logger.error("Error loading IRiS content.", e);
             throw new ContentException(e);
         }
     }
 
-    private String getId(String fileName) throws Exception {
-        String prefix = "";
-        if(fileName.contains("Item")) {
-            prefix = "i";
-        } else if(fileName.contains("stim")) {
-            prefix = "p";
-        }
-
-        String[] parts = fileName.split("-");
-        if(parts.length == 3) {
-            return prefix + "-" + parts[1] + "-" + parts[2];
-        } else {
-            throw new Exception("invalid key");
-        }
-    }
-
     //remove a file from the directory
     public synchronized void removeFile(String fileName) {
-        _contentPath = fileName;
         try {
             _directoryScanner.removeFile(fileName);
         } catch (Exception e) {
