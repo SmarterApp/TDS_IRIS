@@ -48,6 +48,9 @@ Deploy IRIS to Tomcat by placing the WAR file in the Tomcat webapps directory, t
 
 ### Displaying items
 Navigate to `{irisRootURL}/IrisPages/sample.xhtml`.
+
+#### Required Request
+
 To specify which item and accessibility options to load you must give the IRIS a JSON token with the following format.
 ```JSON
 {
@@ -63,8 +66,9 @@ To specify which item and accessibility options to load you must give the IRIS a
 }
 ```
 
-Optional, LoadFrom
-ACan be specified to load and or reload from a specific directory using an absolute path to the content. Example to reload items in /home/tomcat7/temp1 use `loadFrom` request. This will overwrite any existing keys with the specified content in the singleton.
+#### Optional, LoadFrom 
+
+Can be specified to load and or reload from a specific directory using an absolute path to the content. Example to reload items in /home/tomcat7/temp1 use `loadFrom` request. This will overwrite any existing keys with the specified content in the singleton.
 ```JSON
 {
     "items": [{
@@ -79,6 +83,7 @@ ACan be specified to load and or reload from a specific directory using an absol
     ]
 }
 ```
+#### Example Request
 
 For example, to load an item with bank 187 and key 856, with color contrast and print size accessibility options.
 ```JSON
