@@ -27,9 +27,9 @@ IRIS requires a 25 character alphanumeric encryption key set in Apache Tomcat's 
 ```
 
 ## Docker
-tds_irisapp images include content and tds_iriscode do not. 
+tds_irisapp images include content and tds_iriscode does not. 
 
-### add context path
+### Add context path
 By default, context path will be /iris
 To change to preview, pass environment variable CATALINA_OPTS="-DIRISRoot=/preview"
 
