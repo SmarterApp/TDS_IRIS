@@ -1,7 +1,7 @@
 # Welcome to the IRIS Application
 The IRIS takes a folder of Smarter Balanced assessment items as input, and loads them in an iframe.
 A compiled WAR file is hosted in the [Smarter Balanced artifactory](https://airdev.artifactoryonline.com/airdev).
-IRiS version 1.0.3 can be downloaded [here](https://airdev.artifactoryonline.com/airdev/libs-releases-local/org/opentestsystem/delivery/iris/1.0.3/iris-1.0.3.war).
+IRiS versions can be downloaded [here](https://airdev.artifactoryonline.com/airdev/libs-releases-local/org/opentestsystem/delivery/iris/) or checkout the [releases](https://github.com/SmarterApp/TDS_IRIS/releases).
 
 ## License
 This project is licensed under the [Mozilla Public License Version 2.0](https://www.mozilla.org/en-US/MPL/2.0/).
@@ -26,6 +26,19 @@ IRIS requires a 25 character alphanumeric encryption key set in Apache Tomcat's 
 <Parameter name="tds.iris.EncryptionKey" override="false" value="24 characters alphanumeric Encryption key" />
 ```
 
+## Docker
+tds_irisapp images include content and tds_iriscode does not. 
+
+### Add context path
+By default, context path will be /iris
+To change to preview, pass environment variable CATALINA_OPTS="-DIRISRoot=/preview"
+
+### Change memory 
+JAVA_OPTS='-Xmx1g' 
+
+### Content Volume
+-v /your/content/:/home/tomcat7/content
+
 ## Running IRiS
 ### Runtime Dependencies
 * Java 7
@@ -42,6 +55,23 @@ To specify which item and accessibility options to load you must give the IRIS a
         "response": "",
         "id": "I-ItemBank-ItemKey"
     }],
+    "accommodations": [{
+            "type": "AccessibilityFamily",
+            "codes": ["AccessibilityCode1", "AccessibilityCode2"]
+        }
+    ]
+}
+```
+
+Optional, LoadFrom
+ACan be specified to load and or reload from a specific directory using an absolute path to the content. Example to reload items in /home/tomcat7/temp1 use `loadFrom` request. This will overwrite any existing keys with the specified content in the singleton.
+```JSON
+{
+    "items": [{
+        "response": "",
+        "id": "I-ItemBank-ItemKey"
+    }],
+    "loadFrom": "absolute/path/url",
     "accommodations": [{
             "type": "AccessibilityFamily",
             "codes": ["AccessibilityCode1", "AccessibilityCode2"]
@@ -69,6 +99,9 @@ For example, to load an item with bank 187 and key 856, with color contrast and 
 }
 ```
 
+### Reloading items
+
+To reload all items in IRiS, call `Pages/API/content/reload`.
 
 ## Building From Source
 ### Compile Time Dependencies

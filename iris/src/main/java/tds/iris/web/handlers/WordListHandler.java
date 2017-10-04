@@ -14,9 +14,11 @@ import AIR.Common.Configuration.AppSettingsHelper;
 import TDS.Shared.Exceptions.ReturnStatusException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import tds.iris.abstractions.repository.ContentException;
+import tds.iris.abstractions.repository.IContentHelper;
 import tds.iris.content.ContentBuilder;
 import tds.itempreview.ConfigBuilder;
 import tds.itemrenderer.handler.WordListHandlerBase;
@@ -27,18 +29,15 @@ import tds.itemrenderer.handler.WordListHandlerBase;
 public class WordListHandler extends WordListHandlerBase
 {
     private static final Logger     _logger = LoggerFactory.getLogger (ContentBuilder.class);
-    private ConfigBuilder _directoryScanner = null;
-    private String             _contentPath;
+
+    @Autowired
+    private IContentHelper _contentHelper;
 
     @Override
     protected String getItemPath (long bankKey, long itemKey) throws ReturnStatusException {
         try {
-            // scan the local folder.
-            _contentPath = AppSettingsHelper.get ("iris.ContentPath");
-            _directoryScanner = new ConfigBuilder(_contentPath);
-            _directoryScanner.create ();
-            String id = "I-" + String.valueOf(bankKey) + '-' + String.valueOf(itemKey);
-            return _directoryScanner.getRenderableDocument(id).getBaseUri();
+            String id = _contentHelper.getItemFormattedId(bankKey, itemKey);
+            return _contentHelper.getITSDocument(id).getBaseUri();
         } catch (Exception exp) {
             _logger.error ("Error loading IRiS content.", exp);
             throw new ContentException(exp);

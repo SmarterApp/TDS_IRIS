@@ -30,11 +30,12 @@ public class ContentRequest
   private List<ContentRequestItem> _items;
   private String                   _layout;
   private List<ContentRequestAccommodation> _accommodations;
-
   @JsonProperty ("layout")
   public String getLayout () {
     return _layout;
   }
+  private String _locationPath;
+
 
   public void setLayout (String value) {
     _layout = value;
@@ -54,6 +55,7 @@ public class ContentRequest
     return _items;
   }
 
+
   public void setItems (List<ContentRequestItem> value) {
     _items = value;
   }
@@ -66,6 +68,11 @@ public class ContentRequest
   public void setAccommodations (List<ContentRequestAccommodation> value) {
     _accommodations = value;
   }
+
+  @JsonProperty ("loadFrom")
+  public String getLocationPath(){ return _locationPath;}
+
+  public void setLocationPath(String value){ _locationPath = value;}
 
   public static ContentRequest getContentRequest (InputStream inputStream) throws ContentRequestException {
     try {

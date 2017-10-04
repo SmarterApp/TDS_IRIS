@@ -8,8 +8,10 @@
  ******************************************************************************/
 package tds.iris.abstractions.repository;
 
+import tds.blackbox.ContentRequestException;
 import tds.iris.web.data.ContentRequest;
 import tds.itemrenderer.data.AccLookup;
+import tds.itemrenderer.data.IITSDocument;
 import tds.itemrenderer.data.ItemRenderGroup;
 
 public interface IContentHelper
@@ -20,4 +22,8 @@ public interface IContentHelper
   public boolean reloadContent ();
   public void addFile(String fileName);
   public void removeFile(String fileName);
-}
+  public IITSDocument getITSDocument(String id) throws ContentRequestException;
+  public String getItemFormattedId(long bankKey, long itemKey);
+  public String getStimulusFormattedId(long bankKey, long itemKey);
+
+  }
