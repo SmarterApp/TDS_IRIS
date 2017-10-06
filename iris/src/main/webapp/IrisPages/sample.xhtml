@@ -7,7 +7,7 @@
 	<!-- Required by CTB and only scripts required for reference purposes -->
 	<tds:ScriptLink source="~/Scripts/Libraries/jquery/jquery-1.10.2.min.js" type="text/javascript"></tds:ScriptLink>
 	<tds:ScriptLink source="~/Scripts/Utilities/util_xdm.js" type="text/javascript"></tds:ScriptLink>
-	<tds:ScriptLink source="~/Scripts/client.js" type="text/javascript"></tds:ScriptLink>
+	<tds:ScriptLink source="~/Scripts/iris.client.js" type="text/javascript"></tds:ScriptLink>
 	 <!--Styling for this page only and not for IRiS interface. -->
 	<tds:CSSLink href="~/IrisStyles/style.css" media="screen" type="text/css" rel="stylesheet" />
 	<tds:CSSLink href="~/IrisStyles/pagenavi-css.css" media="screen" type="text/css" rel="stylesheet" />
@@ -71,7 +71,6 @@
 	<script type="text/javascript">
 		// In our case the first frame is the content frame but use whichever frame is the content frame in your particular application.
 		IRiS.setFrame(frames[0]);
-
 		// set the vendor guid.
 		//Note: in the OSS IRiS case we do not care for this.
 		var vendorId = '2B3C34BF-064C-462A-93EA-41E9E3EB8333';

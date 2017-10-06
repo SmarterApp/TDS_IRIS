@@ -5,17 +5,14 @@ This code implements the XDM API for use within item preview app.
 (function (XDM, CM) {
 
     var isIrisReady = false;
-    //Adding this onto TDS for now so it is available in the dictionary handler.
     var irisUrl = location.href;
-    // we load one page in advance, but we don't want that to cause a cascade of page show/load
     Blackbox.getConfig().preventShowOnLoad = true;
-    Blackbox.getConfig().baseUrl = irisUrl;
-    ContentManager.Dialog.urlFrame = "Pages/DialogFrame.aspx";
+    // we load one page in advance, but we don't want that to cause a cascade of page show/load
+    Blackbox.getConfig().baseUrl =  irisUrl;
+    ContentManager.Dialog.urlFrame =  "Pages/DialogFrame.aspx";
     //This sets read only mode on the content manager disabling the answer entry areas.
-    CM.setReadOnly(true);
-
+    CM.setReadOnly(true);       
     // Functions that are used by toolbar buttons
-
     //Calculator
     var calculatorBtn = function(ev) {
         var currentPage = ContentManager.getCurrentPage();
@@ -318,11 +315,29 @@ This code implements the XDM API for use within item preview app.
         }
     }
 
-    function loadToken(vendorId, token) {
+    function setReadOnly(readOnly){
+        if(readOnly !== null){
+            CM.setReadOnly(Boolean(readOnly));                    
+        }
+    }
+
+    function scrollToItem(scrollToDivId){
+        if(scrollToDivId){
+            var el = document.getElementById(scrollToDivId);
+            if(el){
+                 el.scrollIntoView();
+             }
+         }
+    }
+
+    function loadToken(vendorId, token, readOnly, scrollToDivId) {
        var deferred = $.Deferred();
+       setReadOnly(readOnly);
+
        blackBoxReady.then(function(){
            loadContentPromise(vendorId, token)
                .then(function(value) {
+                   scrollToItem(scrollToDivId);
                    deferred.resolve(value)
                })
                .catch(function(error){
@@ -573,12 +588,14 @@ This code implements the XDM API for use within item preview app.
         );
     }
 
+
     XDM.addListener('IRiS:loadToken', loadToken);
     XDM.addListener('IRiS:loadContent', loadGroupedContentToken);
     XDM.addListener('IRiS:getResponse', getResponse);
     XDM.addListener('IRiS:setResponse', setResponse);
     XDM.addListener('IRiS:setResponses', setResponses);
-
+    XDM.addListener('IRiS:setReadOnly', setReadOnly);
+    XDM.addListener('IRiS:scrollToItem', scrollToItem);
     XDM.addListener('IRiS:showNext', showNext);
     XDM.addListener('IRiS:showPrev', showPrev);
 

@@ -1,11 +1,12 @@
-FROM osucass/sbtomcat
-
-WORKDIR /usr/local/tomcat/webapps
-RUN  rm -rf ROOT
-COPY iris.war .
-
-RUN mv iris.war ROOT.war
+FROM tomcat:7-jre7
 
 WORKDIR /usr/local/tomcat/
+ARG contextName=ROOT
+
+COPY context.xml ./conf
+RUN  rm -rf webapps/*
+
+COPY iris.war ./webapps
+RUN mv ./webapps/iris.war ./webapps/$contextName.war
 
 ENTRYPOINT ["catalina.sh", "run"]

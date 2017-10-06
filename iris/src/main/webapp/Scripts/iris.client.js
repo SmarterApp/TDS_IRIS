@@ -25,8 +25,17 @@
         frame = frameWindow;
     };
 
-    api.loadToken = function (vendorId, token) {
-        return XDM(frame).post('IRiS:loadToken', vendorId, token);
+    api.setReadOnly = function (readOnly){
+        return XDM(frame).post('IRiS:setReadOnly', readOnly);
+    };
+
+    api.scrollToItem = function (scrollToDivId){
+        return XDM(frame).post('IRiS:scrollToItem', scrollToDivId);
+    };
+
+
+    api.loadToken = function (vendorId, token, readOnly, scrollToDivId) {
+        return XDM(frame).post('IRiS:loadToken', vendorId, token, readOnly, scrollToDivId);
     };
 
     api.loadContent = function (vendorId, token) {

@@ -1,7 +1,9 @@
 # Welcome to the IRIS Application
 The IRIS takes a folder of Smarter Balanced assessment items as input, and loads them in an iframe.
 A compiled WAR file is hosted in the [Smarter Balanced artifactory](https://airdev.artifactoryonline.com/airdev).
-IRiS version 1.0.3 can be downloaded [here](https://airdev.artifactoryonline.com/airdev/libs-releases-local/org/opentestsystem/delivery/iris/1.0.3/iris-1.0.3.war).
+IRiS versions can be downloaded [here](https://airdev.artifactoryonline.com/airdev/libs-releases-local/org/opentestsystem/delivery/iris/) or checkout the [releases](https://github.com/SmarterApp/TDS_IRIS/releases).
+
+For docker versions, please see [dockerhub](https://hub.docker.com/r/osucass/tds_iris/tags/)
 
 ## License
 This project is licensed under the [Mozilla Public License Version 2.0](https://www.mozilla.org/en-US/MPL/2.0/).
@@ -26,6 +28,16 @@ IRIS requires a 25 character alphanumeric encryption key set in Apache Tomcat's 
 <Parameter name="tds.iris.EncryptionKey" override="false" value="24 characters alphanumeric Encryption key" />
 ```
 
+## Docker
+content tagged images have content 
+Use non-content tagged to use different content
+
+### Change memory 
+JAVA_OPTS='-Xmx1g' 
+
+### Content Volume
+-v /your/content/:/home/tomcat7/content
+
 ## Running IRiS
 ### Runtime Dependencies
 * Java 7
@@ -35,6 +47,9 @@ Deploy IRIS to Tomcat by placing the WAR file in the Tomcat webapps directory, t
 
 ### Displaying items
 Navigate to `{irisRootURL}/IrisPages/sample.xhtml`.
+
+#### Required Request
+
 To specify which item and accessibility options to load you must give the IRIS a JSON token with the following format.
 ```JSON
 {
@@ -49,6 +64,9 @@ To specify which item and accessibility options to load you must give the IRIS a
     ]
 }
 ```
+
+
+#### Example Request
 
 For example, to load an item with bank 187 and key 856, with color contrast and print size accessibility options.
 ```JSON
@@ -69,6 +87,53 @@ For example, to load an item with bank 187 and key 856, with color contrast and 
 }
 ```
 
+#### Optional, LoadFrom 
+
+Can be specified to load and or reload from a specific directory using an absolute path to the content. Example to reload items in /home/tomcat7/temp1 use `loadFrom` request. This will overwrite any existing keys with the specified content in the singleton.
+```JSON
+{
+    "items": [{
+        "response": "",
+        "id": "I-ItemBank-ItemKey"
+    }],
+    "loadFrom": "absolute/path/url",
+    "accommodations": [{
+            "type": "AccessibilityFamily",
+            "codes": ["AccessibilityCode1", "AccessibilityCode2"]
+        }
+    ]
+}
+```
+
+#### Optional, Load multiple and/or accessibility items
+
+To load multiple items, if items are related by passage
+```JSON
+{
+    "items": [{
+        "response": "",
+        "id": "I-ItemBank-ItemKey"
+    },
+    {
+        "response": "",
+        "id": "I-ItemBank-ItemKey"
+    }],
+    "loadFrom": "absolute/path/url",
+    "accommodations": [{
+            "type": "AccessibilityFamily",
+            "codes": ["AccessibilityCode1", "AccessibilityCode2"]
+        },
+        {
+            "type": "AccessibilityFamily",
+            "codes": ["AccessibilityCode1", "AccessibilityCode2"]
+        }
+    ]
+}
+```
+
+### Reloading items
+
+To reload all items in IRiS, call `Pages/API/content/reload`.
 
 ## Building From Source
 ### Compile Time Dependencies
