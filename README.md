@@ -3,6 +3,8 @@ The IRIS takes a folder of Smarter Balanced assessment items as input, and loads
 A compiled WAR file is hosted in the [Smarter Balanced artifactory](https://airdev.artifactoryonline.com/airdev).
 IRiS versions can be downloaded [here](https://airdev.artifactoryonline.com/airdev/libs-releases-local/org/opentestsystem/delivery/iris/) or checkout the [releases](https://github.com/SmarterApp/TDS_IRIS/releases).
 
+For docker versions, please see [dockerhub](https://hub.docker.com/r/osucass/tds_iris/tags/)
+
 ## License
 This project is licensed under the [Mozilla Public License Version 2.0](https://www.mozilla.org/en-US/MPL/2.0/).
 
@@ -27,11 +29,8 @@ IRIS requires a 25 character alphanumeric encryption key set in Apache Tomcat's 
 ```
 
 ## Docker
-tds_irisapp images include content and tds_iriscode does not. 
-
-### Add context path
-By default, context path will be /iris
-To change to preview, pass environment variable CATALINA_OPTS="-DIRISRoot=/preview"
+content tagged images have content 
+Use non-content tagged to use different content
 
 ### Change memory 
 JAVA_OPTS='-Xmx1g' 
@@ -66,23 +65,7 @@ To specify which item and accessibility options to load you must give the IRIS a
 }
 ```
 
-#### Optional, LoadFrom 
 
-Can be specified to load and or reload from a specific directory using an absolute path to the content. Example to reload items in /home/tomcat7/temp1 use `loadFrom` request. This will overwrite any existing keys with the specified content in the singleton.
-```JSON
-{
-    "items": [{
-        "response": "",
-        "id": "I-ItemBank-ItemKey"
-    }],
-    "loadFrom": "absolute/path/url",
-    "accommodations": [{
-            "type": "AccessibilityFamily",
-            "codes": ["AccessibilityCode1", "AccessibilityCode2"]
-        }
-    ]
-}
-```
 #### Example Request
 
 For example, to load an item with bank 187 and key 856, with color contrast and print size accessibility options.
@@ -100,6 +83,50 @@ For example, to load an item with bank 187 and key 856, with color contrast and 
             "codes": ["TDS_PS_L4"]
         }
 
+    ]
+}
+```
+
+#### Optional, LoadFrom 
+
+Can be specified to load and or reload from a specific directory using an absolute path to the content. Example to reload items in /home/tomcat7/temp1 use `loadFrom` request. This will overwrite any existing keys with the specified content in the singleton.
+```JSON
+{
+    "items": [{
+        "response": "",
+        "id": "I-ItemBank-ItemKey"
+    }],
+    "loadFrom": "absolute/path/url",
+    "accommodations": [{
+            "type": "AccessibilityFamily",
+            "codes": ["AccessibilityCode1", "AccessibilityCode2"]
+        }
+    ]
+}
+```
+
+#### Optional, Load multiple and/or accessibility items
+
+To load multiple items, if items are related by passage
+```JSON
+{
+    "items": [{
+        "response": "",
+        "id": "I-ItemBank-ItemKey"
+    },
+    {
+        "response": "",
+        "id": "I-ItemBank-ItemKey"
+    }],
+    "loadFrom": "absolute/path/url",
+    "accommodations": [{
+            "type": "AccessibilityFamily",
+            "codes": ["AccessibilityCode1", "AccessibilityCode2"]
+        },
+        {
+            "type": "AccessibilityFamily",
+            "codes": ["AccessibilityCode1", "AccessibilityCode2"]
+        }
     ]
 }
 ```
