@@ -1,0 +1,13 @@
+/* 
+* Styles for the blackbox container, wraps item rendering iframe 
+*/
+
+#loadingDialog .border {
+    left:0;
+    right:0;
+    margin-left:auto;
+    margin-right:auto;
+}
+#yuiProgressDialog .bd, #testApprovalProgress:before {
+    display: none;
+}
