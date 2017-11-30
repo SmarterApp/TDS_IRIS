@@ -2,8 +2,9 @@
 set -ev
 
 cd docker/
+echo Downloading from $CONTENT_PACKAGE_URL
 mkdir content
-wget -q "$CONTENT_PACKAGE_URL" -O content.zip
+wget -q -O content.zip "$CONTENT_PACKAGE_URL" 
 unzip -o content.zip -d content/ &> /dev/null
 rm content.zip 
 
