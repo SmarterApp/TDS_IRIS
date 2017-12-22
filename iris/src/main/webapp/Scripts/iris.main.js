@@ -9,7 +9,7 @@ This code implements the XDM API for use within item preview app.
     Blackbox.getConfig().preventShowOnLoad = true;
     // we load one page in advance, but we don't want that to cause a cascade of page show/load
     Blackbox.getConfig().baseUrl =  irisUrl;
-    ContentManager.Dialog.urlFrame =  "Pages/DialogFrame.aspx";
+    ContentManager.Dialog.urlFrame =  "Pages/API/content/dialog";
     //This sets read only mode on the content manager disabling the answer entry areas.
     CM.setReadOnly(true);       
     // Functions that are used by toolbar buttons
