@@ -50,6 +50,7 @@
 		<div id="body">
 			<textarea id="txtToken" rows="2" cols="50" class="txtArea"></textarea>
 			<button id="btnLoadToken" class="boxBtn">Load Token</button>
+			<input id="readOnly" type="checkbox" class="boxBtn" onchange="toggleRead()" checked="checked">ReadOnly</input>
 			<br /> <br />
 
 			<textarea id="txtResponse" rows="2" cols="50" class="txtArea"></textarea>
@@ -63,7 +64,7 @@
 				a page url and is terminated with a "/". This is required. Scripts use 
 				this root URL to create XHR end points and resources.
 			 -->
-			<iframe src="#{request.contextPath}/" width="1000" height="650" frameBorder="0"></iframe>
+			<iframe src="#{request.contextPath}/IrisPages/itemRender.xhtml" width="1000" height="650" frameBorder="0"></iframe>
 		</div>
 	</div>
 
@@ -88,6 +89,12 @@
 		function processError(err) {
 			var msg = err.message || err.responseText || 'Unknown';
 			alert(msg);
+		}
+
+		function toggleRead() {
+		    var val = document.getElementById('readOnly').checked;
+			IRiS.setReadOnly(val);
+
 		}
 
 		// load secure token
@@ -116,6 +123,7 @@
 				alert('Error setting response: ' + ex.message);
 			});
 		});
+
 	</script>
 
 </h:body>

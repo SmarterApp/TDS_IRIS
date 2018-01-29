@@ -5,13 +5,13 @@ This code implements the XDM API for use within item preview app.
 (function (XDM, CM) {
 
     var isIrisReady = false;
-    var irisUrl = location.href;
+    var irisUrl = location.href.split("IrisPages")[0];
     Blackbox.getConfig().preventShowOnLoad = true;
     // we load one page in advance, but we don't want that to cause a cascade of page show/load
     Blackbox.getConfig().baseUrl =  irisUrl;
-    ContentManager.Dialog.urlFrame =  "Pages/API/content/dialog";
+    ContentManager.Dialog.urlFrame =  irisUrl + "Pages/API/content/dialog";
     //This sets read only mode on the content manager disabling the answer entry areas.
-    CM.setReadOnly(true);       
+    CM.setReadOnly(true);
     // Functions that are used by toolbar buttons
     //Calculator
     var calculatorBtn = function(ev) {
@@ -598,6 +598,7 @@ This code implements the XDM API for use within item preview app.
     XDM.addListener('IRiS:scrollToItem', scrollToItem);
     XDM.addListener('IRiS:showNext', showNext);
     XDM.addListener('IRiS:showPrev', showPrev);
+    XDM.addListener('IRiS:TTS', TTS.Manager);
 
     Blackbox.events.on('ready', function () {
         Blackbox.fireEvent('IRiS:Ready')

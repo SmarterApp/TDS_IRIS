@@ -172,7 +172,7 @@
 		<param-value>false</param-value>
 	</context-param>
 	<welcome-file-list>
-		<welcome-file>IrisPages/index.xhtml</welcome-file>
+		<welcome-file>IrisPages/sample.xhtml</welcome-file>
 	</welcome-file-list>
 	<display-name>Student</display-name>
 </web-app>
