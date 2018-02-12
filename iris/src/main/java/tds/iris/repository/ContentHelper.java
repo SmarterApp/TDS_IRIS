@@ -43,7 +43,6 @@ import static java.nio.file.StandardWatchEventKinds.OVERFLOW;
 @Scope("singleton")
 public class ContentHelper implements IContentHelper {
     private static final Logger _logger = LoggerFactory.getLogger(ContentHelper.class);
-
     private IContentBuilder _contentBuilder;
 
     @PostConstruct
@@ -151,6 +150,9 @@ public class ContentHelper implements IContentHelper {
 
     public IITSDocument getITSDocument(String id) throws ContentRequestException{
         return _contentBuilder.getITSDocument(id);
+    }
+    public IITSDocument getITSDocument(String id, AccLookup accLookup) throws ContentRequestException{
+        return _contentBuilder.getITSDocumentAcc(id, accLookup);
     }
 
     public String getItemFormattedId(long bankKey, long itemKey){

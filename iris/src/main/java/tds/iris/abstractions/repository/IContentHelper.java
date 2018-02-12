@@ -23,6 +23,7 @@ public interface IContentHelper
   public void addFile(String fileName);
   public void removeFile(String fileName);
   public IITSDocument getITSDocument(String id) throws ContentRequestException;
+  public IITSDocument getITSDocument(String id, AccLookup accLookup) throws ContentRequestException;
   public String getItemFormattedId(long bankKey, long itemKey);
   public String getStimulusFormattedId(long bankKey, long itemKey);
 
