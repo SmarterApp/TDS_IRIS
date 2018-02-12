@@ -41,6 +41,8 @@
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<!-- TDSSettings bean. This gives access to clientname and any other info such as session type etc. -->
 	<beans:bean id="tdsSettings" class="TDS.Shared.Configuration.TDSSettings" scope="prototype" />
+	<beans:bean id="configurationService" class="tds.dll.common.performance.services.ConfigurationService" scope="prototype" />
+
 
 	<context:component-scan base-package="tds.iris.repository" />
 	<context:component-scan base-package="tds.student.sql.singletons" />
@@ -53,6 +55,8 @@
 
 	<beans:bean id="iTDSLogger" class="tds.iris.logger.IrisLogger" scope="singleton" />
 	<beans:bean id="iContentBuilder" class="tds.iris.content.ContentBuilder" scope="singleton" />
+	<beans:bean id="ContentRepository" class="tds.iris.content.ContentRepo" scope="singleton" />
+
 	<!-- HTTP web helper -->
 	<beans:bean id="httpWebHelper" class="AIR.Common.Web.HttpWebHelper" />
 

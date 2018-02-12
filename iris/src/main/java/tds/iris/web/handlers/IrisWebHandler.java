@@ -77,6 +77,11 @@ public class IrisWebHandler extends BaseContentRendererController
       }
     }
 
+    if (!accommodations.hasType ("Language")) {
+      accommodations.add ("Language", "ENU");
+    }
+
+
     ItemRenderGroup itemRenderGroup = _contentHelper.loadRenderGroupAcc (contentRequest, accommodations);
     // Shiva: This is where our implementation differs from .NET.
     // In .NET the IRIS method of populating PageLayout is different than the

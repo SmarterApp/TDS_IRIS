@@ -7,7 +7,7 @@
 	</context-param>
 	<context-param>
 		<param-name>javax.faces.CONFIG_FILES</param-name>
-		<param-value>WEB-INF/faces-config.xml,WEB-INF/itempreview-faces-config.xml,/WEB-INF/iris-faces-config.xml</param-value>
+		<param-value>WEB-INF/faces-config.xml,WEB-INF/itempreview-faces-config.xml</param-value>
 	</context-param>
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
