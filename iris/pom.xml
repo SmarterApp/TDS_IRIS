@@ -4,7 +4,7 @@
 	<groupId>org.opentestsystem.delivery</groupId>
 	<artifactId>iris</artifactId>
 	<packaging>war</packaging>
-	<version>3.4.0</version>
+	<version>3.5.0</version>
 	<name>iris</name>
 
     <properties>
