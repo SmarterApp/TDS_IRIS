@@ -75,10 +75,10 @@ public class ConfigBuilder
 
     public ConfigBuilder(String contentPath) throws URISyntaxException {
         _contentPath = contentPath;
-        _docBaseUri = new URI ("file:///" + StringUtils.replace (Server.getDocBasePath (), "\\", "/"));
+        _docBaseUri = new URI ("file:///" + StringUtils.replace (Server.getDocBasePath(), "\\", "/"));
 
         try {
-            Collection<IrisITSDocument> itsDocuments = getITSDocuments (_contentPath);
+            Collection<IrisITSDocument> itsDocuments = getITSDocuments();
             if (itsDocuments != null) {
                 itsDocuments = Collections.unmodifiableCollection(itsDocuments);
             }
@@ -86,11 +86,11 @@ public class ConfigBuilder
             // group and sort the ITS documents by folders
             Collection<IGrouping<String, IrisITSDocument>> groupDocumentsByFolders = groupDocumentsByParentFolder (itsDocuments);
 
-            List<ITSGroups> itsGroupsList = new ArrayList<ITSGroups> ();
+            List<ITSGroups> itsGroupsList = new ArrayList<ITSGroups>();
 
             // go through each folders ITS documents
             for (IGrouping<String, IrisITSDocument> groupedDocuments : groupDocumentsByFolders) {
-                ITSGroups itsGroups = createITSGroups (groupedDocuments);
+                ITSGroups itsGroups = createITSGroups(groupedDocuments);
                 itsGroupsList.add (itsGroups);
             }
 
@@ -118,12 +118,12 @@ public class ConfigBuilder
         if (_documentLookup.containsKey(id)) {
             return _documentLookup.get(id);
         }
-        throw new ContentRequestException (String.format ("No content found by id %s", id));
+        throw new ContentRequestException(String.format("No content found by id %s", id));
     }
 
     public Config addFile(String filePath) {
         Collection<IrisITSDocument> itsDocuments = _documentLookup.values();
-        Collection<IrisITSDocument> newDocs = this.getITSDocuments(filePath);
+        Collection<IrisITSDocument> newDocs = getITSDocuments(filePath);
         newDocs.addAll(itsDocuments);
 
         return reloadContent(newDocs);
@@ -206,7 +206,7 @@ public class ConfigBuilder
     //parse the file name in order to remove the correct file
     private String getRemoveKey(String fileName) throws Exception {
         String[] parts = fileName.split("-");
-        boolean validFile = fileName.toLowerCase().matches("^(item|stim)-([0-9]+)-([0-9]+)$");
+        boolean validFile = fileName.toLowerCase().matches("(item|stim)-([0-9]+)-([0-9]+)");
 
         if(parts.length != 3 || !validFile){
             throw new Exception("invalid key");
@@ -227,8 +227,19 @@ public class ConfigBuilder
     // / </summary>
     private Collection<IrisITSDocument> getITSDocuments(String contentPath) {
         // get all xml files in the content path
+        Collection<File> xmlFiles = Path.getFilesMatchingExtensions(contentPath, new String[]{ "xml" });
+
+        return _generateITSDocuments(xmlFiles);
+    }
+
+    private Collection<IrisITSDocument> getITSDocuments() {
+        // get all xml files in the content path
         Collection<File> xmlFiles = Path.getFilesMatchingExtensions(_contentPath, new String[]{ "xml" });
 
+        return _generateITSDocuments(xmlFiles);
+    }
+
+    private Collection<IrisITSDocument> _generateITSDocuments(Collection<File> xmlFiles) {
         Collection<IrisITSDocument> returnList = new ArrayList<IrisITSDocument>();
 
         for(File file : xmlFiles) {
@@ -241,6 +252,7 @@ public class ConfigBuilder
                 exp.printStackTrace();
             }
         }
+
         return returnList;
     }
 
@@ -322,7 +334,7 @@ public class ConfigBuilder
         for(ITSGroup itsGroup : groupLookup.values()) {
             // if there is a filter ignore empty groups
             // TODO: Refactor
-            if (getFilterFormat () != null || getFilterResponseType () != null) {
+            if (getFilterFormat() != null || getFilterResponseType() != null) {
                 if (itsGroup.getItems() == null || itsGroup.getItems().size() == 0) {
                     continue;
                 }
@@ -359,10 +371,10 @@ public class ConfigBuilder
 
             // create pages
             for(ITSGroup itsGroup : itsGroups) {
-                Page configPage = new Page ();
+                Page configPage = new Page();
                 // configPage.ID = itsGroup.GroupID;
                 configPage.setLabel(itsGroup.getLabel());
-                configPage.setSectionId (configSection.getId ());
+                configPage.setSectionId (configSection.getId());
 
                 // create passage
                 if(itsGroup.getPassage() != null) {
