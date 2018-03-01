@@ -78,37 +78,52 @@ public class ConfigBuilder
         _docBaseUri = new URI ("file:///" + StringUtils.replace (Server.getDocBasePath(), "\\", "/"));
 
         try {
-            Collection<IrisITSDocument> itsDocuments = getITSDocuments();
-            if (itsDocuments != null) {
-                itsDocuments = Collections.unmodifiableCollection(itsDocuments);
-            }
-
-            // group and sort the ITS documents by folders
-            Collection<IGrouping<String, IrisITSDocument>> groupDocumentsByFolders = groupDocumentsByParentFolder (itsDocuments);
-
+//            Collection<IrisITSDocument> itsDocuments = getITSDocuments();
+//            if (itsDocuments != null) {
+//                itsDocuments = Collections.unmodifiableCollection(itsDocuments);
+//            }
+//
+//            // group and sort the ITS documents by folders
+//            Collection<IGrouping<String, IrisITSDocument>> groupDocumentsByFolders = groupDocumentsByParentFolder (itsDocuments);
+//
             List<ITSGroups> itsGroupsList = new ArrayList<ITSGroups>();
-
-            // go through each folders ITS documents
-            for (IGrouping<String, IrisITSDocument> groupedDocuments : groupDocumentsByFolders) {
-                ITSGroups itsGroups = createITSGroups(groupedDocuments);
-                itsGroupsList.add (itsGroups);
-            }
-
-            // build a json config
+//
+//            // go through each folders ITS documents
+//            for (IGrouping<String, IrisITSDocument> groupedDocuments : groupDocumentsByFolders) {
+//                ITSGroups itsGroups = createITSGroups(groupedDocuments);
+//                itsGroupsList.add (itsGroups);
+//            }
+//
+//            // build a json config
             _config = buildConfigPages(itsGroupsList);
+//
+//            // now run through the documents and build the key set.
+//            Map<String, IrisITSDocument> documentsMap = new CaseInsensitiveMap<IrisITSDocument>();
+//            for (IrisITSDocument itsDocument : itsDocuments) {
+//                documentsMap.put (ItsItemIdUtil.getItsDocumentId (itsDocument), itsDocument);
+//            }
 
-            // now run through the documents and build the key set.
-            Map<String, IrisITSDocument> documentsMap = new CaseInsensitiveMap<IrisITSDocument> ();
-            for (IrisITSDocument itsDocument : itsDocuments) {
-                documentsMap.put (ItsItemIdUtil.getItsDocumentId (itsDocument), itsDocument);
-            }
+            //_documentLookup = Collections.unmodifiableMap (documentsMap);
+            _documentLookup = new HashMap<String, IrisITSDocument>();
 
-            _documentLookup = Collections.unmodifiableMap (documentsMap);
         } catch (Exception exp) {
             _logger.error ("Error loading IRiS content.", exp);
             _error = exp;
             throw exp;
         }
+    }
+
+    private String translateItemId(String item) throws IllegalArgumentException {
+        //move regex string to private final var later.
+        String translatedStr = item.toLowerCase();
+        if(!translatedStr.matches("[ip]-[0-9]+-[0-9]+(-[0-9a-zA-Z]+)?")) {
+            throw new IllegalArgumentException();
+        }
+
+        translatedStr = translatedStr.replace("i","Item");
+        translatedStr = translatedStr.replace("p","stim");
+
+        return translatedStr;
     }
 
     public IrisITSDocument getDocumentRepresentation(String id) throws ContentRequestException {
@@ -118,10 +133,18 @@ public class ConfigBuilder
         if (_documentLookup.containsKey(id)) {
             return _documentLookup.get(id);
         }
-        throw new ContentRequestException(String.format("No content found by id %s", id));
+        else {
+
+            String path = _contentPath + translateItemId(id) + "/";
+            reloadContent(getITSDocuments(path));
+            return _documentLookup.get(id);
+        }
+        //throw new ContentRequestException(String.format("No content found by id %s", id));
     }
 
     public Config addFile(String filePath) {
+        // refactor to only grab specfic items inside directory
+
         Collection<IrisITSDocument> itsDocuments = _documentLookup.values();
         Collection<IrisITSDocument> newDocs = getITSDocuments(filePath);
         newDocs.addAll(itsDocuments);
@@ -151,6 +174,7 @@ public class ConfigBuilder
 
     public IITSDocument getRenderableDocument(String id, AccLookup accLookup) throws ContentRequestException {
         IrisITSDocument documentRepresentation = getDocumentRepresentation(id);
+
         return correctBaseUri(ITSDocumentFactory.load(documentRepresentation.getRealPath(), accLookup, true));
     }
 
@@ -181,7 +205,7 @@ public class ConfigBuilder
         List<ITSGroups> itsGroupsList = new ArrayList();
 
         for (IGrouping<String, IrisITSDocument> i : groupDocumentsByFolders) {
-            ITSGroups groups = this.createITSGroups(i);
+            ITSGroups groups = createITSGroups(i);
             itsGroupsList.add(groups);
         }
 
