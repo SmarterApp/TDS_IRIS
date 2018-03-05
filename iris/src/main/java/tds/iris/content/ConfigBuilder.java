@@ -11,29 +11,27 @@
  */
 package tds.iris.content;
 
-import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
-
-import org.apache.commons.collections.Transformer;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import AIR.Common.Helpers.CaseInsensitiveMap;
 import AIR.Common.Utilities.Path;
 import AIR.Common.Web.Session.Server;
 import AIR.Common.collections.IGrouping;
-
+import org.apache.commons.collections.Transformer;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tds.blackbox.ContentRequestException;
+import tds.iris.Models.ItsItemIdUtil;
 import tds.itempreview.*;
 import tds.itemrenderer.ITSDocumentFactory;
 import tds.itemrenderer.data.AccLookup;
 import tds.itemrenderer.data.IITSDocument;
-import tds.itemrenderer.data.IrisITSDocument;
-import tds.itemrenderer.data.ItsItemIdUtil;
 import tds.itemrenderer.data.ITSTypes.ITSEntityType;
+import tds.iris.Models.IrisITSDocument;
+
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.*;
 
 /**
  * @author Shiva BEHERA [sbehera@air.org]
@@ -113,19 +111,6 @@ public class ConfigBuilder
         }
     }
 
-    private String translateItemId(String item) throws IllegalArgumentException {
-        //move regex string to private final var later.
-        String translatedStr = item.toLowerCase();
-        if(!translatedStr.matches("[ip]-[0-9]+-[0-9]+(-[0-9a-zA-Z]+)?")) {
-            throw new IllegalArgumentException();
-        }
-
-        translatedStr = translatedStr.replace("i","Item");
-        translatedStr = translatedStr.replace("p","stim");
-
-        return translatedStr;
-    }
-
     public IrisITSDocument getDocumentRepresentation(String id) throws ContentRequestException {
         if (_error != null) {
             throw new ContentRequestException ("Content not loaded properly.", _error);
@@ -134,8 +119,7 @@ public class ConfigBuilder
             return _documentLookup.get(id);
         }
         else {
-
-            String path = _contentPath + translateItemId(id) + "/";
+            String path = _contentPath + ItsItemIdUtil.translateItemId(id) + "/";
             reloadContent(getITSDocuments(path));
             return _documentLookup.get(id);
         }
@@ -180,9 +164,9 @@ public class ConfigBuilder
 
     private Config reloadContent(Collection<IrisITSDocument> itsDocuments) {
         try {
-            if (itsDocuments != null) {
-                itsDocuments = Collections.unmodifiableCollection(itsDocuments);
-            }
+//            if (itsDocuments != null) {
+//                itsDocuments = Collections.unmodifiableCollection(itsDocuments);
+//            }
 
             List<ITSGroups> itsGroupsList = ItsGroupsList(itsDocuments);
             _documentLookup = IrisItsDocumentmap(itsDocuments);
@@ -221,7 +205,15 @@ public class ConfigBuilder
         }
 
         for(IrisITSDocument doc : itsDocuments) {
-            documentsMap.put(ItsItemIdUtil.getItsDocumentId(doc), doc);
+            String id;
+
+            if (doc.getRevisionKey() != "") {
+                id = String.format("%s-%s", ItsItemIdUtil.getItsDocumentId(doc), doc.getRevisionKey());
+            } else {
+                id = String.format("%s", ItsItemIdUtil.getItsDocumentId(doc));
+            }
+
+            documentsMap.put(id, doc);
         }
 
         return Collections.unmodifiableMap(documentsMap);
@@ -229,6 +221,8 @@ public class ConfigBuilder
 
     //parse the file name in order to remove the correct file
     private String getRemoveKey(String fileName) throws Exception {
+        final String FILE_NAME_FORMAT = "%s-%s-%s";
+
         String[] parts = fileName.split("-");
         boolean validFile = fileName.toLowerCase().matches("(item|stim)-([0-9]+)-([0-9]+)");
 
@@ -243,7 +237,7 @@ public class ConfigBuilder
             prefix = "p";
         }
 
-        return prefix + "-" + parts[1] + "-" +  parts[2];
+        return String.format(FILE_NAME_FORMAT, prefix,  parts[1],  parts[2]);
     }
 
     // / <summary>
@@ -268,9 +262,20 @@ public class ConfigBuilder
 
         for(File file : xmlFiles) {
             String xmlFile = file.getAbsolutePath();
+            String revKey = "";
+
+             for (String f : xmlFile.split("\\\\")) {
+                 // format itemType-bankKey-ItemKey-RevisionKey
+                 if (f.toLowerCase().matches("(item|stim)-([0-9]+)-([0-9]+)-([0-9]+)")) {
+                     revKey = f.split("-")[3];
+                     break;
+                 }
+             }
+
             try {
-                IITSDocument itsDocument = correctBaseUri(ITSDocumentFactory.loadUri2 (xmlFile, AccLookup.getNone (), false));
+                IITSDocument itsDocument = correctBaseUri(ITSDocumentFactory.loadUri2 (xmlFile, AccLookup.getNone(), false));
                 IrisITSDocument irisDocument = new IrisITSDocument(itsDocument, xmlFile);
+                irisDocument.setRevisionKey(revKey);
                 returnList.add(irisDocument);
             } catch(Exception exp) {
                 exp.printStackTrace();
