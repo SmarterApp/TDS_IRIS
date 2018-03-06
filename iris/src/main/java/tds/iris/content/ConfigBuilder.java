@@ -121,7 +121,7 @@ public class ConfigBuilder
         else {
             String path = _contentPath + ItsItemIdUtil.translateItemId(id) + "/";
             reloadContent(getITSDocuments(path));
-            return _documentLookup.get(id);
+            return _documentLookup.get(id.toLowerCase());
         }
         //throw new ContentRequestException(String.format("No content found by id %s", id));
     }
@@ -164,12 +164,11 @@ public class ConfigBuilder
 
     private Config reloadContent(Collection<IrisITSDocument> itsDocuments) {
         try {
-//            if (itsDocuments != null) {
-//                itsDocuments = Collections.unmodifiableCollection(itsDocuments);
-//            }
-
             List<ITSGroups> itsGroupsList = ItsGroupsList(itsDocuments);
-            _documentLookup = IrisItsDocumentmap(itsDocuments);
+
+            for (Map.Entry<String, IrisITSDocument> doc : IrisItsDocumentmap(itsDocuments).entrySet()) {
+                 _documentLookup.put(doc.getKey(),doc.getValue());
+            }
             _config = buildConfigPages(itsGroupsList);
 
             return _config;
@@ -200,10 +199,6 @@ public class ConfigBuilder
     {
         Map<String, IrisITSDocument> documentsMap = new CaseInsensitiveMap();
 
-        if(itsDocuments != null) {
-            itsDocuments = Collections.unmodifiableCollection(itsDocuments);
-        }
-
         for(IrisITSDocument doc : itsDocuments) {
             String id;
 
@@ -212,11 +207,13 @@ public class ConfigBuilder
             } else {
                 id = String.format("%s", ItsItemIdUtil.getItsDocumentId(doc));
             }
-
             documentsMap.put(id, doc);
         }
+        return documentsMap;
+    }
 
-        return Collections.unmodifiableMap(documentsMap);
+    private boolean validFileName(String file) {
+        return file.toLowerCase().matches("(item|stim)-[0-9]+-[0-9]+(-[0-9a-zA-Z]+)?");
     }
 
     //parse the file name in order to remove the correct file
@@ -224,7 +221,7 @@ public class ConfigBuilder
         final String FILE_NAME_FORMAT = "%s-%s-%s";
 
         String[] parts = fileName.split("-");
-        boolean validFile = fileName.toLowerCase().matches("(item|stim)-([0-9]+)-([0-9]+)");
+        boolean validFile = validFileName(fileName);
 
         if(parts.length != 3 || !validFile){
             throw new Exception("invalid key");
@@ -250,13 +247,6 @@ public class ConfigBuilder
         return _generateITSDocuments(xmlFiles);
     }
 
-    private Collection<IrisITSDocument> getITSDocuments() {
-        // get all xml files in the content path
-        Collection<File> xmlFiles = Path.getFilesMatchingExtensions(_contentPath, new String[]{ "xml" });
-
-        return _generateITSDocuments(xmlFiles);
-    }
-
     private Collection<IrisITSDocument> _generateITSDocuments(Collection<File> xmlFiles) {
         Collection<IrisITSDocument> returnList = new ArrayList<IrisITSDocument>();
 
@@ -266,7 +256,7 @@ public class ConfigBuilder
 
              for (String f : xmlFile.split("\\\\")) {
                  // format itemType-bankKey-ItemKey-RevisionKey
-                 if (f.toLowerCase().matches("(item|stim)-([0-9]+)-([0-9]+)-([0-9]+)")) {
+                 if (validFileName(f) && f.split("-").length == 4) {
                      revKey = f.split("-")[3];
                      break;
                  }
