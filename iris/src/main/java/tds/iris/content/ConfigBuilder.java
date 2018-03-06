@@ -195,10 +195,11 @@ public class ConfigBuilder
     private String getRemoveKey(String fileName) throws Exception {
         final String FILE_NAME_FORMAT = "%s-%s-%s";
 
+
         String[] parts = fileName.split("-");
         boolean validFile = validFileName(fileName);
 
-        if(parts.length != 3 || !validFile){
+        if(!(parts.length >= 3) || !validFile){
             throw new Exception("invalid key");
         }
 
@@ -207,6 +208,11 @@ public class ConfigBuilder
             prefix = "i";
         } else if(fileName.contains("stim")) {
             prefix = "p";
+        }
+
+        // account for revision key.
+        if (parts.length == 4) {
+            return String.format("%s-%s-%s-%s", prefix,  parts[1],  parts[2],parts[3]);
         }
 
         return String.format(FILE_NAME_FORMAT, prefix,  parts[1],  parts[2]);
