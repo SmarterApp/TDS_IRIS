@@ -76,32 +76,8 @@ public class ConfigBuilder
         _docBaseUri = new URI ("file:///" + StringUtils.replace (Server.getDocBasePath(), "\\", "/"));
 
         try {
-//            Collection<IrisITSDocument> itsDocuments = getITSDocuments();
-//            if (itsDocuments != null) {
-//                itsDocuments = Collections.unmodifiableCollection(itsDocuments);
-//            }
-//
-//            // group and sort the ITS documents by folders
-//            Collection<IGrouping<String, IrisITSDocument>> groupDocumentsByFolders = groupDocumentsByParentFolder (itsDocuments);
-//
             List<ITSGroups> itsGroupsList = new ArrayList<ITSGroups>();
-//
-//            // go through each folders ITS documents
-//            for (IGrouping<String, IrisITSDocument> groupedDocuments : groupDocumentsByFolders) {
-//                ITSGroups itsGroups = createITSGroups(groupedDocuments);
-//                itsGroupsList.add (itsGroups);
-//            }
-//
-//            // build a json config
             _config = buildConfigPages(itsGroupsList);
-//
-//            // now run through the documents and build the key set.
-//            Map<String, IrisITSDocument> documentsMap = new CaseInsensitiveMap<IrisITSDocument>();
-//            for (IrisITSDocument itsDocument : itsDocuments) {
-//                documentsMap.put (ItsItemIdUtil.getItsDocumentId (itsDocument), itsDocument);
-//            }
-
-            //_documentLookup = Collections.unmodifiableMap (documentsMap);
             _documentLookup = new HashMap<String, IrisITSDocument>();
 
         } catch (Exception exp) {
@@ -123,7 +99,6 @@ public class ConfigBuilder
             reloadContent(getITSDocuments(path));
             return _documentLookup.get(id.toLowerCase());
         }
-        //throw new ContentRequestException(String.format("No content found by id %s", id));
     }
 
     public Config addFile(String filePath) {
