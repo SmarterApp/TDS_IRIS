@@ -87,6 +87,21 @@ public class ConfigBuilder
         }
     }
 
+    public String getContentPathSubDir(String id) throws IllegalArgumentException {
+        String subDirectory;
+        id = id.toLowerCase();
+
+        if(id.matches("i-[0-9]+-[0-9]+(-[0-9a-zA-Z]+)?")) {
+            subDirectory = "Items/";
+        } else if (id.matches("p-[0-9]+-[0-9]+(-[0-9a-zA-Z]+)?")) {
+            subDirectory = "Stimuli/";
+        } else {
+            throw new IllegalArgumentException();
+        }
+
+        return subDirectory;
+    }
+
     public IrisITSDocument getDocumentRepresentation(String id) throws ContentRequestException {
         if (_error != null) {
             throw new ContentRequestException ("Content not loaded properly.", _error);
@@ -95,7 +110,7 @@ public class ConfigBuilder
             return _documentLookup.get(id);
         }
         else {
-            String path = _contentPath + ItsItemIdUtil.translateItemId(id) + "/";
+            String path = _contentPath + getContentPathSubDir(id) + ItsItemIdUtil.translateItemId(id) + "/";
             reloadContent(getITSDocuments(path));
             return _documentLookup.get(id.toLowerCase());
         }
