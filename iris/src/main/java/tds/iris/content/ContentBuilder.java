@@ -8,36 +8,16 @@
  ******************************************************************************/
 package tds.iris.content;
 
-import java.io.IOException;
-import java.nio.file.*;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
-import javax.annotation.PostConstruct;
-
-import AIR.Common.Configuration.AppSetting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import AIR.Common.Configuration.AppSettingsHelper;
-import AIR.Common.Helpers.CaseInsensitiveMap;
-import AIR.Common.Utilities.SpringApplicationContext;
 import tds.blackbox.ContentRequestException;
 import tds.iris.abstractions.repository.ContentException;
 import tds.iris.abstractions.repository.IContentBuilder;
-import tds.itempreview.ConfigBuilder;
-import tds.itempreview.Content;
 import tds.itemrenderer.data.*;
-import tds.itemrenderer.data.ITSTypes.ITSEntityType;
-
-import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
 @Component
 @Scope("singleton")
@@ -48,7 +28,7 @@ public class ContentBuilder implements IContentBuilder {
     public synchronized void init(String location) throws ContentException {
         try {
             _directoryScanner = new ConfigBuilder(location);
-            _directoryScanner.create();
+            //_directoryScanner.create();
         } catch (Exception exp) {
             _logger.error("Error loading IRiS content.", exp);
             throw new ContentException(exp);
