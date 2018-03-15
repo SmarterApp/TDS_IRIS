@@ -107,7 +107,7 @@
 	</listener>
 	<listener>
 		<description>contextTrackerListener</description>
-		<listener-class>tds.student.web.dummy.TDSApplication</listener-class>
+		<listener-class>tds.iris.web.backing.TDSApplication</listener-class>
 	</listener>
 
 	<!-- All filters -->
