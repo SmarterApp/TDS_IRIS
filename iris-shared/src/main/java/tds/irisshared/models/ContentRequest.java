@@ -6,7 +6,7 @@
  * See accompanying file AIR-License-1_0.txt or at
  * http://www.smarterapp.org/documents/American_Institutes_for_Research_Open_Source_Software_License.pdf
  ******************************************************************************/
-package tds.iris.web.data;
+package tds.irisshared.models;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

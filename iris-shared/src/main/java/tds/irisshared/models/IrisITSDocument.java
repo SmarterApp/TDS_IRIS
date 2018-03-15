@@ -1,7 +1,8 @@
-package tds.iris.Models;
+package tds.irisshared.models;
 
 import tds.itemrenderer.data.IITSDocument;
 import tds.itemrenderer.data.ITSContent;
+import tds.itemrenderer.data.ITSDocument;
 
 import java.util.List;
 
@@ -9,11 +10,19 @@ import java.util.List;
  * @author mskhan
  *
  */
-public class IrisITSDocument extends IITSDocument
+public class IrisITSDocument extends ITSDocument
 {
 
     private String _realPath;
     private String _revisionKey = "";
+
+
+
+    private long _itemKey;
+    private long _stimulusKey;
+
+
+
 
     public IrisITSDocument (IITSDocument itsDocument, String realPath) {
         this.setItemKey (itsDocument.getItemKey ());
@@ -49,9 +58,28 @@ public class IrisITSDocument extends IITSDocument
         return null;
     }
 
-    private void setRealPath (String value) {
+    public void setRealPath (String value) {
         this._realPath = value;
     }
 
     public void setRevisionKey(String s) { _revisionKey = s; }
+
+    public void setItemKey(long itemKey) {
+        this._itemKey = itemKey;
+    }
+
+    public void setStimulusKey(long stimulusKey) {
+        this._stimulusKey = stimulusKey;
+    }
+
+    @Override
+    public long getItemKey() {
+        return _itemKey;
+    }
+
+    @Override
+    public long getStimulusKey() {
+        return _stimulusKey;
+    }
+
 }

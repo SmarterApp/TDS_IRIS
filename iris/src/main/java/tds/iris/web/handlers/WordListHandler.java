@@ -17,9 +17,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import tds.iris.abstractions.repository.ContentException;
-import tds.iris.abstractions.repository.IContentHelper;
-import tds.iris.content.ContentBuilder;
+import tds.irisshared.content.ContentException;
+import tds.irisshared.repository.IContentHelper;
+import tds.irisshared.content.ContentBuilder;
 import tds.itempreview.ConfigBuilder;
 import tds.itemrenderer.handler.WordListHandlerBase;
 

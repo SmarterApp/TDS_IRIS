@@ -9,7 +9,7 @@
 /**
  *
  */
-package tds.iris.content;
+package tds.irisshared.content;
 
 import AIR.Common.Helpers.CaseInsensitiveMap;
 import AIR.Common.Utilities.Path;
@@ -20,13 +20,14 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tds.blackbox.ContentRequestException;
-import tds.iris.Models.ItsItemIdUtil;
+import tds.irisshared.models.ItsItemIdUtil;
 import tds.itempreview.*;
 import tds.itemrenderer.ITSDocumentFactory;
 import tds.itemrenderer.data.AccLookup;
 import tds.itemrenderer.data.IITSDocument;
+import tds.itemrenderer.data.ITSDocument;
 import tds.itemrenderer.data.ITSTypes.ITSEntityType;
-import tds.iris.Models.IrisITSDocument;
+import tds.irisshared.models.IrisITSDocument;
 
 import java.io.File;
 import java.net.URI;
@@ -311,7 +312,7 @@ public class ConfigBuilder
         Map<String, ITSGroup> groupLookup = new HashMap<String, ITSGroup> ();
 
         // create groups out of the passages
-        for(IITSDocument itsPassage : itsPassages) {
+        for(ITSDocument itsPassage : itsPassages) {
             String groupID = itsPassage.getGroupID ();
             if (groupLookup.containsKey(groupID)) {
                 continue;
@@ -322,7 +323,7 @@ public class ConfigBuilder
             groupLookup.put (groupID, itsGroup);
         }
 
-        for(IITSDocument item : itsItems) {
+        for(ITSDocument item : itsItems) {
             String itemGroupID = item.getGroupID ();
 
             if(ignorePassages && item.getStimulusKey () > 0) {

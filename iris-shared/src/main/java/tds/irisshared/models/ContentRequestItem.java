@@ -6,19 +6,27 @@
  * See accompanying file AIR-License-1_0.txt or at
  * http://www.smarterapp.org/documents/American_Institutes_for_Research_Open_Source_Software_License.pdf
  ******************************************************************************/
-package tds.iris.abstractions.repository;
+package tds.irisshared.models;
 
-public class ContentException extends RuntimeException
+import tds.itemrenderer.data.ITSTypes.ITSEntityType;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class ContentRequestItem extends ContentRequestEntity
 {
-  public ContentException (String message) {
-    super (message);
+  private String _response;
+
+  public ContentRequestItem () {
+    super ();
+    setItsType (ITSEntityType.Item);
   }
 
-  public ContentException (Exception exp) {
-    super (exp);
+  @JsonProperty ("response")
+  public String getResponse () {
+    return _response;
   }
 
-  public ContentException (String message, Exception exp) {
-    super (message, exp);
+  public void setResponse (String value) {
+    _response = value;
   }
 }

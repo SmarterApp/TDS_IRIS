@@ -6,7 +6,7 @@
  * See accompanying file AIR-License-1_0.txt or at
  * http://www.smarterapp.org/documents/American_Institutes_for_Research_Open_Source_Software_License.pdf
  ******************************************************************************/
-package tds.iris.repository;
+package tds.irisshared.repository;
 
 import java.util.List;
 import java.util.Map;

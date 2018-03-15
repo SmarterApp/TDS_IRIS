@@ -6,7 +6,7 @@
  * See accompanying file AIR-License-1_0.txt or at
  * http://www.smarterapp.org/documents/American_Institutes_for_Research_Open_Source_Software_License.pdf
  ******************************************************************************/
-package tds.iris.repository;
+package tds.irisshared.repository;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -25,12 +25,10 @@ import org.springframework.stereotype.Component;
 
 import AIR.Common.Utilities.SpringApplicationContext;
 import tds.blackbox.ContentRequestException;
-import tds.iris.abstractions.repository.ContentException;
-import tds.iris.abstractions.repository.IContentBuilder;
-import tds.iris.abstractions.repository.IContentHelper;
-import tds.iris.web.data.ContentRequest;
-import tds.iris.web.data.ContentRequestEntity;
-import tds.iris.web.data.ContentRequestItem;
+import tds.irisshared.content.ContentException;
+import tds.irisshared.models.ContentRequest;
+import tds.irisshared.models.ContentRequestEntity;
+import tds.irisshared.models.ContentRequestItem;
 import tds.itemrenderer.data.*;
 import tds.itemrenderer.data.ITSTypes.ITSEntityType;
 

@@ -6,10 +6,10 @@
  * See accompanying file AIR-License-1_0.txt or at
  * http://www.smarterapp.org/documents/American_Institutes_for_Research_Open_Source_Software_License.pdf
  ******************************************************************************/
-package tds.iris.abstractions.repository;
+package tds.irisshared.repository;
 
 import tds.blackbox.ContentRequestException;
-import tds.iris.web.data.ContentRequest;
+import tds.irisshared.models.ContentRequest;
 import tds.itemrenderer.data.AccLookup;
 import tds.itemrenderer.data.IITSDocument;
 import tds.itemrenderer.data.ItemRenderGroup;

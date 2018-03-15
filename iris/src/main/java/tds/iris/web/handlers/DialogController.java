@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import tds.iris.abstractions.repository.IContentHelper;
+import tds.irisshared.repository.IContentHelper;
 import tds.itemrenderer.data.ItemRenderGroup;
 import tds.itemrenderer.webcontrols.PageLayout;
 import tds.itemrenderer.webcontrols.rendererservlet.RendererServlet;

@@ -1,4 +1,4 @@
-package tds.iris.Models;
+package tds.irisshared.models;
 
 import tds.itemrenderer.data.IITSDocument;
 import tds.itemrenderer.data.ITSTypes.ITSEntityType;

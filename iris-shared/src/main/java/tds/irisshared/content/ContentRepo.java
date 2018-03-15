@@ -1,11 +1,11 @@
-package tds.iris.content;
+package tds.irisshared.content;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import tds.blackbox.ContentRequestException;
-import tds.iris.abstractions.repository.IContentHelper;
-import tds.iris.repository.ContentHelper;
+import tds.irisshared.repository.IContentHelper;
+import tds.irisshared.repository.ContentHelper;
 import tds.itemrenderer.data.AccLookup;
 import tds.itemrenderer.data.IITSDocument;
 import tds.itemrenderer.data.xml.wordlist.Itemrelease;

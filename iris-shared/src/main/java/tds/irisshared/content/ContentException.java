@@ -6,27 +6,19 @@
  * See accompanying file AIR-License-1_0.txt or at
  * http://www.smarterapp.org/documents/American_Institutes_for_Research_Open_Source_Software_License.pdf
  ******************************************************************************/
-package tds.iris.web.data;
+package tds.irisshared.content;
 
-import tds.itemrenderer.data.ITSTypes.ITSEntityType;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-public class ContentRequestPassage extends ContentRequestEntity
+public class ContentException extends RuntimeException
 {
-  private boolean _autoLoad = true;
-
-  public ContentRequestPassage () {
-    super ();
-    setItsType (ITSEntityType.Passage);
+  public ContentException (String message) {
+    super (message);
   }
 
-  @JsonProperty ("autoLoad")
-  public boolean getAutoLoad () {
-    return _autoLoad;
+  public ContentException (Exception exp) {
+    super (exp);
   }
 
-  public void setAutoLoad (boolean value) {
-    _autoLoad = value;
+  public ContentException (String message, Exception exp) {
+    super (message, exp);
   }
 }
