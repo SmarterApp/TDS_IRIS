@@ -1,7 +1,7 @@
 package tds.iris.Models;
 
-import com.amazonaws.util.StringUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +47,7 @@ public class ItemRequestModel {
   private void buildAccommodations() {
     HashMap<String, List<String>> accomms = new HashMap<>();
     for (String code: this.featureCodes) {
-      if (StringUtils.isNullOrEmpty(code)) {
+      if (StringUtils.isNotEmpty(code)) {
         continue;
       }
 
