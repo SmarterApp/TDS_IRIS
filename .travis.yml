@@ -20,13 +20,12 @@ before_script:
   - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
 
 script:
- - cd iris
- - mvn clean install
+ - mvn -B clean install
 
 after_success:
  - docker --version
  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
- - mv target/iris.war ../docker/
+ - mv iris/target/iris.war docker/
  - cd $TRAVIS_BUILD_DIR
  - chmod ugo+x DeployScripts/code_docker_deploy.sh
  - chmod ugo+x DeployScripts/app_docker_deploy.sh
