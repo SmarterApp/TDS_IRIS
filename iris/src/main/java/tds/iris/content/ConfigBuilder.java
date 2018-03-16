@@ -87,13 +87,20 @@ public class ConfigBuilder
         }
     }
 
+    /**
+     * Takes in a string containing the id of the item and returns that items corresponding directory within the content folder.
+     * @param id
+     * @return
+     * @throws IllegalArgumentException
+     */
     public String getContentPathSubDir(String id) throws IllegalArgumentException {
+        final String  subFileName = "[0-9]+-[0-9]+(-[0-9a-zA-Z]+)?";
         String subDirectory;
         id = id.toLowerCase();
 
-        if(id.matches("i-[0-9]+-[0-9]+(-[0-9a-zA-Z]+)?")) {
+        if(id.matches("i-" + subFileName)) {
             subDirectory = "Items/";
-        } else if (id.matches("p-[0-9]+-[0-9]+(-[0-9a-zA-Z]+)?")) {
+        } else if (id.matches("p-" + subFileName)) {
             subDirectory = "Stimuli/";
         } else {
             throw new IllegalArgumentException();
@@ -102,6 +109,13 @@ public class ConfigBuilder
         return subDirectory;
     }
 
+    /**
+     * returns the corresponding document for a given Id. First a lookup for the document is created in _documentLookup if it cannot be found
+     * the document is added to the lookup.
+     * @param id
+     * @return
+     * @throws ContentRequestException
+     */
     public IrisITSDocument getDocumentRepresentation(String id) throws ContentRequestException {
         if (_error != null) {
             throw new ContentRequestException ("Content not loaded properly.", _error);
@@ -116,6 +130,11 @@ public class ConfigBuilder
         }
     }
 
+    /**
+     * ???
+     * @param filePath
+     * @return
+     */
     public Config addFile(String filePath) {
         // refactor to only grab specfic items inside directory
 
@@ -126,7 +145,12 @@ public class ConfigBuilder
         return reloadContent(newDocs);
     }
 
-    // throws requires this method is wrapped in a try catch.
+    /**
+     * Removes a given id from the _documentLookup store.
+     * @param fileName
+     * @return
+     * @throws Exception
+     */
     public Config removeFile(String fileName) throws Exception {
         Collection<IrisITSDocument> itsDocuments = _documentLookup.values();
         String key = getRemoveKey(fileName);
@@ -139,6 +163,12 @@ public class ConfigBuilder
         return reloadContent(newDocs);
     }
 
+    /**
+     * Returns document data for a given Id under default accessibility values
+     * @param id
+     * @return
+     * @throws ContentRequestException
+     */
     public IITSDocument getRenderableDocument (String id) throws ContentRequestException {
         IrisITSDocument documentRepresentation = getDocumentRepresentation (id);
         // In the below code there is no way to set accommodations.
@@ -146,12 +176,24 @@ public class ConfigBuilder
         return correctBaseUri (ITSDocumentFactory.load (documentRepresentation.getRealPath (), "ENU", true));
     }
 
+    /**
+     * Returns document data for a given Id under custom accessibility values
+     * @param id
+     * @param accLookup
+     * @return
+     * @throws ContentRequestException
+     */
     public IITSDocument getRenderableDocument(String id, AccLookup accLookup) throws ContentRequestException {
         IrisITSDocument documentRepresentation = getDocumentRepresentation(id);
 
         return correctBaseUri(ITSDocumentFactory.load(documentRepresentation.getRealPath(), accLookup, true));
     }
 
+    /**
+     * Adds a new document to the dynamic content store.
+     * @param itsDocuments
+     * @return
+     */
     private Config reloadContent(Collection<IrisITSDocument> itsDocuments) {
         try {
             List<ITSGroups> itsGroupsList = ItsGroupsList(itsDocuments);
@@ -169,6 +211,11 @@ public class ConfigBuilder
         }
     }
 
+    /**
+     * groups meta data of different items by the parent folder they are contained in.
+     * @param itsDocuments
+     * @return
+     */
     private List<ITSGroups> ItsGroupsList(Collection<IrisITSDocument> itsDocuments){
         if(itsDocuments != null) {
             itsDocuments = Collections.unmodifiableCollection(itsDocuments);
@@ -185,6 +232,11 @@ public class ConfigBuilder
         return itsGroupsList;
     }
 
+    /**
+     * Generates a new lookup list of IrisItsDocuments
+     * @param itsDocuments
+     * @return
+     */
     private Map<String, IrisITSDocument> IrisItsDocumentmap(Collection<IrisITSDocument> itsDocuments)
     {
         Map<String, IrisITSDocument> documentsMap = new CaseInsensitiveMap();
@@ -202,10 +254,21 @@ public class ConfigBuilder
         return documentsMap;
     }
 
+    /**
+     * validates a file name
+     * @param file
+     * @return
+     */
     private boolean validFileName(String file) {
         return file.toLowerCase().matches("(item|stim)-[0-9]+-[0-9]+(-[0-9a-zA-Z]+)?");
     }
 
+    /**
+     * Generate a valid filename based of a truncated name.
+     * @param fileName
+     * @return
+     * @throws Exception
+     */
     //parse the file name in order to remove the correct file
     private String getRemoveKey(String fileName) throws Exception {
         final String FILE_NAME_FORMAT = "%s-%s-%s";
