@@ -4,10 +4,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class ConfigBuilderTest {
-    final static String CONTENT_PATH = "";
+    final String CONTENT_PATH = "/home/tomcat7/content/";
     ConfigBuilder documentLookup = null;
 
     @Before
@@ -17,8 +15,8 @@ public class ConfigBuilderTest {
 
     @Test
     public void getContentPathSubDirTest() {
-        Assert.assertEquals(documentLookup.getContentPathSubDir("i-123-1234-1A"),"Items/");
-        Assert.assertEquals(documentLookup.getContentPathSubDir("p-123-1234-1A"),"Stimuli/");
+        Assert.assertEquals("Items/",documentLookup.getContentPathSubDir("i-123-1234-1A"));
+        Assert.assertEquals("Stimuli/",documentLookup.getContentPathSubDir("p-123-1234-1A"));
     }
 
     @Test
