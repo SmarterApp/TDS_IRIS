@@ -9,8 +9,6 @@ cache:
 
 install:
   - export PATH=$PATH:$HOME/.local/bin
-  - travis_retry pip install --upgrade pip
-  - python --version
 
 services:
  - docker
