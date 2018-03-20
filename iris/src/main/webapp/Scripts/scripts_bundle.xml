@@ -2,6 +2,7 @@
 <resources>
     <import>scripts_blackbox.xml</import>
     <fileset name="calculator">
+        <input>Calculator/desmos/calculator.js</input>
         <input>Calculator/calculator.js</input>
     </fileset>
     <fileset name="dictionary">
