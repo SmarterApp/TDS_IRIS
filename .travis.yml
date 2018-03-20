@@ -36,7 +36,9 @@ deploy:
       tags: true
   - provider: releases
     api_key: $GIT_API_KEY
-    file: docker/iris.war
+    file: 
+    - docker/iris.war
+    - iris-shared/target/iris-shared.jar
     skip_cleanup: true
     on:
       tags: true
