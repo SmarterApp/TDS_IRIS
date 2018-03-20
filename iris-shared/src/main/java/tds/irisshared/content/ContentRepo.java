@@ -29,7 +29,7 @@ public class ContentRepo implements ContentRepository{
             final String contextPath,
             final boolean oggAudioSupport) throws ContentRequestException {
         //TODO: Add methhod to itemrender to accept string instead of item id
-        return _contentHelper.getITSDocument("I-187-3477", accommodations);
+        throw new ContentRequestException("Not implemented method");
 
     }
 
@@ -41,7 +41,7 @@ public class ContentRepo implements ContentRepository{
             final String itemPath,
             final String contextPath,
             final boolean oggAudioSupport) throws ContentRequestException {
-        return null;
+        throw new ContentRequestException("Not implemented method");
     }
 
 

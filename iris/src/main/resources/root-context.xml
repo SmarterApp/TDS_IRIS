@@ -41,7 +41,7 @@
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<!-- TDSSettings bean. This gives access to clientname and any other info such as session type etc. -->
 	<beans:bean id="tdsSettings" class="TDS.Shared.Configuration.TDSSettings" scope="prototype" />
-	<beans:bean id="configurationService" class="tds.dll.common.performance.services.ConfigurationService" scope="prototype" />
+	<beans:bean id="configurationService" class="tds.dll.common.performance.services.impl.ConfigurationServiceImpl" scope="prototype" />
 
 
 	<context:component-scan base-package="tds.irisshared.repository" />
