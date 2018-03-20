@@ -1,3 +1,0 @@
-{"items":[{"response":"<response><math xmlns=\"http://www.w3.org/1998/Math/MathML\" title=\"12\"><mstyle><mn>12</mn></mstyle></math></response>","id":"I-187-1986"}],"passage":null}
-
-{"items":[{"response":"","id":"I-187-2672"}, {"response":"","id":"I-187-2673"}, {"response":"","id":"I-187-2674"}, {"response":"","id":"I-187-2675"}, {"response":"","id":"I-187-2676"}, {"response":"","id":"I-187-2677"}, {"response":"","id":"I-187-2678"}, {"response":"","id":"I-187-2679"}, {"response":"","id":"I-187-2674"}],"passage":{"id":"P-187-3756"}}

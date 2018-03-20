@@ -33,9 +33,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import AIR.Common.Web.TDSReplyCode;
 import AIR.Common.data.ResponseData;
 import tds.blackbox.ContentRequestAccommodation;
-import tds.iris.abstractions.repository.ContentException;
-import tds.iris.abstractions.repository.IContentHelper;
-import tds.iris.web.data.ContentRequest;
+import tds.irisshared.content.ContentException;
+import tds.irisshared.repository.IContentHelper;
+import tds.irisshared.models.ContentRequest;
 import tds.itemrenderer.data.AccLookup;
 import tds.itemrenderer.data.ItemRenderGroup;
 import tds.itemrenderer.webcontrols.PageSettings.UniqueIdType;
@@ -76,6 +76,11 @@ public class IrisWebHandler extends BaseContentRendererController
         }
       }
     }
+
+    if (!accommodations.hasType ("Language")) {
+      accommodations.add ("Language", "ENU");
+    }
+
 
     ItemRenderGroup itemRenderGroup = _contentHelper.loadRenderGroupAcc (contentRequest, accommodations);
     // Shiva: This is where our implementation differs from .NET.
