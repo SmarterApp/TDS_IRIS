@@ -1,4 +1,4 @@
-package tds.iris.Models;
+package tds.irisshared.models;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.StringUtils;

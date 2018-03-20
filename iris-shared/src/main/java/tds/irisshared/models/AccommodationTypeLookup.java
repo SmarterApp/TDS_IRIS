@@ -1,4 +1,4 @@
-package tds.iris.Models;
+package tds.irisshared.models;
 
 
 import java.util.ArrayList;
