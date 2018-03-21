@@ -40,7 +40,7 @@ public final class AccommodationTypeLookup {
     accommodationMap.put("TDS_TTSAA_SelectVP", "TTS Audio Adjustments");
 
     // TTS Rules
-    accommodationMap.put("TDS_TTX_A203 - TTX", "Business Rules");
+    accommodationMap.put("TDS_TTX_A203", "TTX Business Rules");
     accommodationMap.put("TDS_TTSPause1", "TTS Pausing");
 
     //Braille
@@ -216,7 +216,7 @@ public final class AccommodationTypeLookup {
     conditionalAccommodations.put("TDS_TTSAA_SelectVP", "TTS Audio Adjustments");
 
     // TTS Rules
-    conditionalAccommodations.put("TDS_TTX_A203 - TTX", "Business Rules");
+    conditionalAccommodations.put("TDS_TTX_A203", "TTX Business Rules");
     conditionalAccommodations.put("TDS_TTSPause1", "TTS Pausing");
 
   }
