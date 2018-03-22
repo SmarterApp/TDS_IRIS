@@ -4,16 +4,76 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import tds.itemrenderer.data.IITSDocument;
+import tds.itemrenderer.data.ITSContent;
 import tds.itemrenderer.data.ITSTypes;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class ItsItemIdUtilTest {
 
+    /**
+     * Testing interface for abstract IITSDocument
+     */
+    public class TestDocument extends IITSDocument {
+        @Override
+        public List<String> getMediaFiles() {
+            return null;
+        }
+
+        @Override
+        public ITSContent getContent(String language) {
+            return null;
+        }
+
+        @Override
+        public ITSContent getContentDefault() {
+            return null;
+        }
+
+        // Wrapper for accessing setType protected function.
+        public void setItemType(ITSTypes.ITSEntityType val) {
+            this.setType(val);
+        }
+    }
+
     @Test
-    public void getItsDocumentIdTest() {
+    public void getItsDocumentIdTest1() {
         Assert.assertEquals("I-187-1645",ItsItemIdUtil.getItsDocumentId(187,1645, ITSTypes.ITSEntityType.Item));
         Assert.assertEquals("P-187-1645",ItsItemIdUtil.getItsDocumentId(187,1645, ITSTypes.ITSEntityType.Passage));
+    }
+
+    @Test
+    public void getItsDocumentIdTest2() {
+        TestDocument doc1 = new TestDocument();
+        doc1.setBankKey(187);
+        doc1.setItemKey((long) 1645);
+        doc1.setItemType(ITSTypes.ITSEntityType.Item);
+
+        TestDocument doc2 = new TestDocument();
+        doc2.setBankKey(187);
+        doc2.setItemKey((long) 1645);
+        doc2.setItemType(ITSTypes.ITSEntityType.Passage);
+
+        Assert.assertEquals("I-187-1645",ItsItemIdUtil.getItsDocumentId(doc1));
+        Assert.assertEquals("P-187-1645",ItsItemIdUtil.getItsDocumentId(doc2));
+    }
+
+    @Test
+    public void getItsDocumentIdTest3() {
+        TestDocument doc1 = new TestDocument();
+        doc1.setBankKey(187);
+        doc1.setItemKey((long) 1645);
+        doc1.setItemType(ITSTypes.ITSEntityType.Item);
+
+        TestDocument doc2 = new TestDocument();
+        doc2.setBankKey(187);
+        doc2.setItemKey((long) 1645);
+        doc2.setItemType(ITSTypes.ITSEntityType.Passage);
+
+        Assert.assertEquals("I-187-1645-1A",ItsItemIdUtil.getItsDocumentId(doc1,"1A"));
+        Assert.assertEquals("P-187-1645-1A",ItsItemIdUtil.getItsDocumentId(doc2,"1A"));
     }
 
     @Test
