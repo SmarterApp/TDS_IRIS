@@ -4,7 +4,7 @@
     <artifactId>iris-master</artifactId>
     <packaging>pom</packaging>
     <name>iris-master</name>
-    <version>3.5.4</version>
+    <version>3.6.0.RELEASE</version>
     <parent>
         <groupId>org.opentestsystem.shared</groupId>
         <artifactId>shared-master</artifactId>
@@ -48,4 +48,11 @@
             <url>https://airdev.artifactoryonline.com/airdev/libs-releases-local</url>
         </repository>
     </repositories>
+    <distributionManagement>
+        <repository>
+            <id>central</id>
+            <name>airdev-releases</name>
+            <url>https://airdev.jfrog.io/airdev/libs-releases-local</url>
+        </repository>
+    </distributionManagement>
 </project>
