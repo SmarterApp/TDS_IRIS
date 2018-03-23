@@ -55,6 +55,7 @@
 
 	<beans:bean id="iTDSLogger" class="tds.iris.logger.IrisLogger" scope="singleton" />
 	<beans:bean id="iContentBuilder" class="tds.irisshared.content.ContentBuilder" scope="singleton" />
+	<beans:bean id="iContentLocation" class="tds.irisshared.repository.ContentLocation" scope="singleton"/>
 
 	<!-- HTTP web helper -->
 	<beans:bean id="httpWebHelper" class="AIR.Common.Web.HttpWebHelper" />

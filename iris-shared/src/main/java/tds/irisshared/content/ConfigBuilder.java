@@ -13,14 +13,17 @@ package tds.irisshared.content;
 
 import AIR.Common.Helpers.CaseInsensitiveMap;
 import AIR.Common.Utilities.Path;
+import AIR.Common.Utilities.SpringApplicationContext;
 import AIR.Common.Web.Session.Server;
 import AIR.Common.collections.IGrouping;
 import org.apache.commons.collections.Transformer;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import tds.blackbox.ContentRequestException;
 import tds.irisshared.models.ItsItemIdUtil;
+import tds.irisshared.repository.IContentLocation;
 import tds.itempreview.*;
 import tds.itemrenderer.ITSDocumentFactory;
 import tds.itemrenderer.data.AccLookup;
@@ -52,6 +55,8 @@ public class ConfigBuilder
     private Exception                    _error;
     private Config                       _config;
 
+    private IContentLocation _contentLocation;
+
     public String getFilterFormat() {
         return _filterFormat;
     }
@@ -73,6 +78,8 @@ public class ConfigBuilder
     }
 
     public ConfigBuilder(String contentPath) throws URISyntaxException {
+        _contentLocation = SpringApplicationContext.getBean("iContentLocation", IContentLocation.class);
+
         _contentPath = contentPath;
         _docBaseUri = new URI ("file:///" + StringUtils.replace (Server.getDocBasePath(), "\\", "/"));
 
@@ -88,20 +95,6 @@ public class ConfigBuilder
         }
     }
 
-    public String getContentPathSubDir(String id) throws IllegalArgumentException {
-        String subDirectory;
-        id = id.toLowerCase();
-
-        if(id.matches("i-[0-9]+-[0-9]+(-[0-9a-zA-Z]+)?")) {
-            subDirectory = "Items/";
-        } else if (id.matches("p-[0-9]+-[0-9]+(-[0-9a-zA-Z]+)?")) {
-            subDirectory = "Stimuli/";
-        } else {
-            throw new IllegalArgumentException();
-        }
-
-        return subDirectory;
-    }
 
     public IrisITSDocument getDocumentRepresentation(String id) throws ContentRequestException {
         if (_error != null) {
@@ -111,7 +104,7 @@ public class ConfigBuilder
             return _documentLookup.get(id);
         }
         else {
-            String path = _contentPath + getContentPathSubDir(id) + ItsItemIdUtil.translateItemId(id) + "/";
+            String path = _contentPath + _contentLocation.getFileLocation(id) + ItsItemIdUtil.translateItemId(id) + "/";
             reloadContent(getITSDocuments(path));
             return _documentLookup.get(id.toLowerCase());
         }
