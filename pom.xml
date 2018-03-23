@@ -4,7 +4,7 @@
     <artifactId>iris-master</artifactId>
     <packaging>pom</packaging>
     <name>iris-master</name>
-    <version>3.6.0.RELEASE</version>
+    <version>3.6.1.SNAPSHOT</version>
     <parent>
         <groupId>org.opentestsystem.shared</groupId>
         <artifactId>shared-master</artifactId>
