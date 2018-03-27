@@ -1,11 +1,10 @@
-package tds.irisshared.repository;
+package tds.irisshared.content;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import tds.irisshared.content.ContentException;
 
 @Component
-@Scope("singleton")
+@Scope("prototype")
 public class ContentLocation implements IContentLocation {
 
     @Override

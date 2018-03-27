@@ -1,4 +1,4 @@
-package tds.irisshared.repository;
+package tds.irisshared.content;
 
 public interface IContentLocation {
 
