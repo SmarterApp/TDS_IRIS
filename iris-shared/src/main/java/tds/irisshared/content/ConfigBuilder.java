@@ -242,7 +242,7 @@ public class ConfigBuilder
             String xmlFile = file.getAbsolutePath();
             String revKey = "";
 
-             for (String f : xmlFile.split("\\\\")) {
+             for (String f : xmlFile.split(File.separator)) {
                  // format itemType-bankKey-ItemKey-RevisionKey
                  if (validFileName(f) && f.split("-").length == 4) {
                      revKey = f.split("-")[3];
