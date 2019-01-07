@@ -102,7 +102,7 @@ public class ConfigBuilder
             return _documentLookup.get(id);
         }
         else {
-            String path = _contentPath + _contentLocation.getFileLocation(id) + ItsItemIdUtil.translateItemId(id) + "/";
+            String path = _contentPath + ItsItemIdUtil.translateItemId(id) + "/";
             reloadContent(getITSDocuments(path));
             return _documentLookup.get(id.toLowerCase());
         }

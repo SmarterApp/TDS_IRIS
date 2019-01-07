@@ -7,13 +7,13 @@
 	<parent>
 		<groupId>org.opentestsystem.delivery</groupId>
 		<artifactId>iris-master</artifactId>
-		<version>3.6.2</version>
+		<version>3.6.5</version>
 	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>org.opentestsystem.delivery</groupId>
 			<artifactId>student-library</artifactId>
-			<version>${tds-student-common.version}</version>
+			<version>3.1.1.RELEASE</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.opentestsystem.delivery</groupId>
