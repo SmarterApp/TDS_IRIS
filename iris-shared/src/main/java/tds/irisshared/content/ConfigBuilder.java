@@ -240,6 +240,7 @@ public class ConfigBuilder
 
         for(File file : xmlFiles) {
             String xmlFile = file.getAbsolutePath();
+            _logger.debug("XML file is:" +xmlFile): 
             String revKey = "";
              for (String f : xmlFile.split(String.valueOf(File.separatorChar == 92  ? "\\\\" : File.separatorChar ))) {
                  // format itemType-bankKey-ItemKey-RevisionKey
@@ -250,6 +251,7 @@ public class ConfigBuilder
              }
 
             try {
+                _logger.debug("XML file processed is:" +xmlFile): 
                 IITSDocument itsDocument = correctBaseUri(ITSDocumentFactory.loadUri2 (xmlFile, AccLookup.getNone(), false));
                 IrisITSDocument irisDocument = new IrisITSDocument(itsDocument, xmlFile);
                 irisDocument.setRevisionKey(revKey);
