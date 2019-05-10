@@ -11,7 +11,6 @@
  */
 package tds.irisshared.content;
 
-import AIR.Common.Helpers.CaseInsensitiveMap;
 import AIR.Common.Utilities.Path;
 import AIR.Common.Utilities.SpringApplicationContext;
 import AIR.Common.Web.Session.Server;
@@ -21,19 +20,32 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tds.blackbox.ContentRequestException;
+import tds.irisshared.models.IrisITSDocument;
 import tds.irisshared.models.ItsItemIdUtil;
-import tds.itempreview.*;
+import tds.itempreview.Config;
+import tds.itempreview.Content;
+import tds.itempreview.ITSGroup;
+import tds.itempreview.ITSGroups;
+import tds.itempreview.Item;
+import tds.itempreview.ItemPreviewSettings;
+import tds.itempreview.Page;
+import tds.itempreview.Section;
 import tds.itemrenderer.ITSDocumentFactory;
 import tds.itemrenderer.data.AccLookup;
 import tds.itemrenderer.data.IITSDocument;
 import tds.itemrenderer.data.ITSDocument;
 import tds.itemrenderer.data.ITSTypes.ITSEntityType;
-import tds.irisshared.models.IrisITSDocument;
 
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Shiva BEHERA [sbehera@air.org]
@@ -179,7 +191,7 @@ public class ConfigBuilder
 
     private Map<String, IrisITSDocument> IrisItsDocumentmap(Collection<IrisITSDocument> itsDocuments)
     {
-        Map<String, IrisITSDocument> documentsMap = new CaseInsensitiveMap();
+        Map<String, IrisITSDocument> documentsMap = new HashMap<>();
 
         for(IrisITSDocument doc : itsDocuments) {
             String id;

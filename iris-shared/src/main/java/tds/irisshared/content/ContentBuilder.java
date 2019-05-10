@@ -8,16 +8,15 @@
  ******************************************************************************/
 package tds.irisshared.content;
 
+import AIR.Common.Configuration.AppSettingsHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import AIR.Common.Configuration.AppSettingsHelper;
 import tds.blackbox.ContentRequestException;
-import tds.irisshared.content.ContentException;
 import tds.irisshared.repository.IContentBuilder;
-import tds.itemrenderer.data.*;
+import tds.itemrenderer.data.AccLookup;
+import tds.itemrenderer.data.IITSDocument;
 
 @Component
 @Scope("singleton")
