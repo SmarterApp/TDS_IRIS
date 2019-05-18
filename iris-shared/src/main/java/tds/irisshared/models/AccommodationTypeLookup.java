@@ -126,6 +126,7 @@ public final class AccommodationTypeLookup {
     accommodationMap.put("TDS_TTS_Item", "TTS");
     accommodationMap.put("TDS_TTS_Stim", "TTS");
     accommodationMap.put("TDS_TTS_Stim&TDS_TTS_Item", "TTS");
+    accommodationMap.put("TDS_TTS_VI", "TTS");
 
     //Translation Glossary
     accommodationMap.put("TDS_WL0", "Word List");

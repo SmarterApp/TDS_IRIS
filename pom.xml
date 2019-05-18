@@ -12,7 +12,7 @@
     </parent>
     <properties>
         <tds-student.version>3.1.1.RELEASE</tds-student.version>
-        <tds-item-renderer.version>3.3.0.RELEASE</tds-item-renderer.version>
+        <tds-item-renderer.version>3.3.0.RELEASE.TIMS</tds-item-renderer.version>
         <tds-item-renderer-exclude.version>3.1.1.RELEASE</tds-item-renderer-exclude.version>
         <assertj.version>2.6.0</assertj.version>
         <item-selection.version>3.1.1.RELEASE</item-selection.version>
