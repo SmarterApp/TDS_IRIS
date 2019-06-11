@@ -4,7 +4,7 @@
     <artifactId>iris-master</artifactId>
     <packaging>pom</packaging>
     <name>iris-master</name>
-    <version>3.6.6</version>
+    <version>3.6.9</version>
     <parent>
         <groupId>org.opentestsystem.shared</groupId>
         <artifactId>shared-master</artifactId>
@@ -12,7 +12,7 @@
     </parent>
     <properties>
         <tds-student.version>3.1.1.RELEASE</tds-student.version>
-        <tds-item-renderer.version>3.3.0.RELEASE</tds-item-renderer.version>
+        <tds-item-renderer.version>3.4.0.RELEASE</tds-item-renderer.version>
         <tds-item-renderer-exclude.version>3.1.1.RELEASE</tds-item-renderer-exclude.version>
         <assertj.version>2.6.0</assertj.version>
         <item-selection.version>3.1.1.RELEASE</item-selection.version>
