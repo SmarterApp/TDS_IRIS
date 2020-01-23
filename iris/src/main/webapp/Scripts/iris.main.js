@@ -354,6 +354,9 @@ This code implements the XDM API for use within item preview app.
         return new Promise(
             function(resolve, reject ) {
                 Messages.set('TDS.WordList.illustration', 'Illustration', 'ENU');
+                Messages.set('TDS.WordList.burmeseGlossary', 'Burmese Glossary', 'ENU');
+                Messages.set('TDS.WordList.somaliGlossary', 'Somali Glossary', 'ENU');
+                Messages.set('TDS.WordList.hmongGlossary', 'Hmong Glossary', 'ENU');
                 TDS.Dialog.showProgress();
                 setAccommodations(token);
                 var url = irisUrl + '/Pages/API/content/load?id=' + vendorId;

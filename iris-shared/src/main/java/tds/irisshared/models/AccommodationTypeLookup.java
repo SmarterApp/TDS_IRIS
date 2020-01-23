@@ -140,6 +140,9 @@ public final class AccommodationTypeLookup {
     accommodationMap.put("TDS_WL_TagalGloss", "Word List");
     accommodationMap.put("TDS_WL_UkrainianGloss", "Word List");
     accommodationMap.put("TDS_WL_VietnameseGloss", "Word List");
+    accommodationMap.put("TDS_WL_BurmeseGloss", "Word List");
+    accommodationMap.put("TDS_WL_HmongGloss", "Word List");
+    accommodationMap.put("TDS_WL_SomaliGloss", "Word List");
     accommodationMap.put("TDS_WL_ArabicGloss&TDS_WL_Glossary", "Word List");
     accommodationMap.put("TDS_WL_CantoneseGloss&TDS_WL_Glossary", "Word List");
     accommodationMap.put("TDS_WL_ESNGlossary&TDS_WL_Glossary", "Word List");
@@ -150,6 +153,9 @@ public final class AccommodationTypeLookup {
     accommodationMap.put("TDS_WL_TagalGloss&TDS_WL_Glossary", "Word List");
     accommodationMap.put("TDS_WL_UkrainianGloss&TDS_WL_Glossary", "Word List");
     accommodationMap.put("TDS_WL_VietnameseGloss&TDS_WL_Glossary", "Word List");
+    accommodationMap.put("TDS_WL_BurmeseGloss&TDS_WL_Glossary", "Word List");
+    accommodationMap.put("TDS_WL_HmongGloss&TDS_WL_Glossary", "Word List");
+    accommodationMap.put("TDS_WL_SomaliGloss&TDS_WL_Glossary", "Word List"); 
     accommodationMap.put("TDS_WL_Illustration", "Word List");
 
     //Calculator
